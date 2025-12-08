@@ -11,8 +11,7 @@ const Footer = () => {
               <span className="font-display text-2xl">EXPORT BUYERS</span>
             </div>
             <p className="text-muted-foreground">
-              輸出向け中古車・バイク専門の買取サービス。
-              他社で0円査定された車両も適正価格で買取します。
+              輸出向け中古車・バイク専門の買取サービス。他社で0円査定された車両も適正価格で買取します。
             </p>
           </div>
 
