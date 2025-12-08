@@ -1,12 +1,32 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useRef } from "react";
+import Header from "@/components/Header";
+import HeroSection from "@/components/HeroSection";
+import FeaturesSection from "@/components/FeaturesSection";
+import SpeedometerSimulator from "@/components/SpeedometerSimulator";
+import AssessmentForm from "@/components/AssessmentForm";
+import Footer from "@/components/Footer";
 
 const Index = () => {
+  const formRef = useRef<HTMLDivElement>(null);
+
+  const scrollToForm = () => {
+    formRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      <Header onScrollToForm={scrollToForm} />
+      <main>
+        <HeroSection onScrollToForm={scrollToForm} />
+        <section id="features">
+          <FeaturesSection />
+        </section>
+        <section id="simulator">
+          <SpeedometerSimulator />
+        </section>
+        <AssessmentForm formRef={formRef} />
+      </main>
+      <Footer />
     </div>
   );
 };
