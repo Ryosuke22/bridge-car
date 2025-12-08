@@ -24,7 +24,7 @@ const Footer = () => {
             </li>
               <li>
             </li>
-              <li>•</li>
+              <li>•不動車可</li>
             </ul>
           </div>
 
