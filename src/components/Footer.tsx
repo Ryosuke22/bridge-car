@@ -1,8 +1,6 @@
 import { Car, Mail, Phone, MapPin } from "lucide-react";
-
 const Footer = () => {
-  return (
-    <footer className="py-12 bg-background border-t border-border/50">
+  return <footer className="py-12 bg-background border-t border-border/50">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           <div>
@@ -21,10 +19,12 @@ const Footer = () => {
           <div>
             <h3 className="font-display text-xl mb-4 text-foreground">買取対象</h3>
             <ul className="space-y-2 text-muted-foreground">
-              <li>• 過走行車（10万km以上）</li>
-              <li>• 低年式車（15年以上）</li>
-              <li>• 事故現状車・不動車</li>
-              <li>• カスタムバイク</li>
+              <li>• 初年度登録平成12年以前のもの</li>
+              <li>
+            </li>
+              <li>
+            </li>
+              <li>•</li>
             </ul>
           </div>
 
@@ -51,8 +51,6 @@ const Footer = () => {
           <p>© 2024 Export Buyers. All rights reserved.</p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
