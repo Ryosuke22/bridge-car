@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Car, Bike, Star, Flame, GripVertical } from "lucide-react";
+import { Car, Bike, Star, Flame, GripVertical, Plus, X } from "lucide-react";
 import {
   DndContext,
   closestCenter,
@@ -20,6 +20,23 @@ import {
   rectSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface WantedVehicle {
   id: string;
@@ -111,9 +128,10 @@ const CardContent = ({ vehicle, isHighPriority, isDragging }: CardContentProps) 
 interface SortableCardProps {
   vehicle: WantedVehicle;
   isHighPriority: boolean;
+  onDelete: (id: string) => void;
 }
 
-const SortableCard = ({ vehicle, isHighPriority }: SortableCardProps) => {
+const SortableCard = ({ vehicle, isHighPriority, onDelete }: SortableCardProps) => {
   const {
     attributes,
     listeners,
@@ -139,6 +157,13 @@ const SortableCard = ({ vehicle, isHighPriority }: SortableCardProps) => {
       >
         <GripVertical className="h-4 w-4 text-muted-foreground" />
       </div>
+      {/* Delete Button */}
+      <button
+        onClick={() => onDelete(vehicle.id)}
+        className="absolute top-2 right-10 z-10 p-1.5 rounded-md bg-destructive/50 hover:bg-destructive cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
+      >
+        <X className="h-4 w-4 text-destructive-foreground" />
+      </button>
       <div
         className={`rounded-xl p-5 transition-all duration-300 ${
           isHighPriority
@@ -187,6 +212,13 @@ const WantedSection = () => {
   const [highPriorityVehicles, setHighPriorityVehicles] = useState(initialHighPriority);
   const [normalPriorityVehicles, setNormalPriorityVehicles] = useState(initialNormalPriority);
   const [activeVehicle, setActiveVehicle] = useState<WantedVehicle | null>(null);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [newVehicle, setNewVehicle] = useState({
+    name: "",
+    category: "Car" as WantedVehicle["category"],
+    tag: "",
+    priority: "High" as WantedVehicle["priority"],
+  });
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -198,6 +230,32 @@ const WantedSection = () => {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
+
+  const handleAddVehicle = () => {
+    if (!newVehicle.name.trim()) return;
+
+    const vehicle: WantedVehicle = {
+      id: `new-${Date.now()}`,
+      name: newVehicle.name,
+      category: newVehicle.category,
+      tag: newVehicle.tag || "新規追加",
+      priority: newVehicle.priority,
+    };
+
+    if (newVehicle.priority === "High") {
+      setHighPriorityVehicles((prev) => [...prev, vehicle]);
+    } else {
+      setNormalPriorityVehicles((prev) => [...prev, vehicle]);
+    }
+
+    setNewVehicle({ name: "", category: "Car", tag: "", priority: "High" });
+    setIsAddDialogOpen(false);
+  };
+
+  const handleDeleteVehicle = (id: string) => {
+    setHighPriorityVehicles((prev) => prev.filter((v) => v.id !== id));
+    setNormalPriorityVehicles((prev) => prev.filter((v) => v.id !== id));
+  };
 
   const findContainer = (id: string) => {
     if (highPriorityVehicles.find((v) => v.id === id)) return "high";
@@ -293,8 +351,77 @@ const WantedSection = () => {
             以下の車両・バイクは特に高価買取中です。お持ちの方はぜひご相談ください。
           </p>
           <p className="text-sm text-muted-foreground mt-2">
-            ※ カードをドラッグしてセクション間の移動・並び替えができます
+            ※ カードをドラッグしてセクション間の移動・並び替え、ホバーで削除ができます
           </p>
+          
+          {/* Add Button */}
+          <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+            <DialogTrigger asChild>
+              <Button className="mt-4" variant="outline">
+                <Plus className="h-4 w-4 mr-2" />
+                車両を追加
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>新しい車両を追加</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4 pt-4">
+                <div>
+                  <Label htmlFor="name">車両名</Label>
+                  <Input
+                    id="name"
+                    value={newVehicle.name}
+                    onChange={(e) => setNewVehicle({ ...newVehicle, name: e.target.value })}
+                    placeholder="例: Toyota Supra MK4"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="tag">タグ</Label>
+                  <Input
+                    id="tag"
+                    value={newVehicle.tag}
+                    onChange={(e) => setNewVehicle({ ...newVehicle, tag: e.target.value })}
+                    placeholder="例: 2JZ-GTE / 希少MTモデル"
+                  />
+                </div>
+                <div>
+                  <Label>カテゴリー</Label>
+                  <Select
+                    value={newVehicle.category}
+                    onValueChange={(value) => setNewVehicle({ ...newVehicle, category: value as WantedVehicle["category"] })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Car">Car</SelectItem>
+                      <SelectItem value="Bike">Bike</SelectItem>
+                      <SelectItem value="Car/Bike">Car/Bike</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label>優先度</Label>
+                  <Select
+                    value={newVehicle.priority}
+                    onValueChange={(value) => setNewVehicle({ ...newVehicle, priority: value as WantedVehicle["priority"] })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="High">High Priority</SelectItem>
+                      <SelectItem value="Normal">Normal Priority</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <Button onClick={handleAddVehicle} className="w-full">
+                  追加する
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
 
         <DndContext
@@ -314,7 +441,7 @@ const WantedSection = () => {
             <SortableContext items={allIds} strategy={rectSortingStrategy}>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 min-h-[120px] p-2 rounded-xl border-2 border-dashed border-accent/30 bg-accent/5">
                 {highPriorityVehicles.map((vehicle) => (
-                  <SortableCard key={vehicle.id} vehicle={vehicle} isHighPriority={true} />
+                  <SortableCard key={vehicle.id} vehicle={vehicle} isHighPriority={true} onDelete={handleDeleteVehicle} />
                 ))}
               </div>
             </SortableContext>
@@ -329,7 +456,7 @@ const WantedSection = () => {
             <SortableContext items={allIds} strategy={rectSortingStrategy}>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 min-h-[120px] p-2 rounded-xl border-2 border-dashed border-border bg-muted/5">
                 {normalPriorityVehicles.map((vehicle) => (
-                  <SortableCard key={vehicle.id} vehicle={vehicle} isHighPriority={false} />
+                  <SortableCard key={vehicle.id} vehicle={vehicle} isHighPriority={false} onDelete={handleDeleteVehicle} />
                 ))}
               </div>
             </SortableContext>
