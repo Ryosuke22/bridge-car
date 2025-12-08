@@ -13,8 +13,8 @@ const features = [
   },
   {
     icon: TrendingUp,
-    title: "過走行車も高額",
-    description: "10万km超は海外では「まだ新車」。走行距離で価値は下がりません。",
+    title: "2000年以降の車両",
+    description: "買取対象は2000年以降に生産された車両・バイクです。輸出需要の高い年式を中心に高価買取。",
   },
   {
     icon: Wrench,
@@ -23,8 +23,8 @@ const features = [
   },
   {
     icon: Shield,
-    title: "事故現状車OK",
-    description: "不動車、事故車、水没車も買取対象。状態問わずまずはご相談ください。",
+    title: "不動車も買取OK",
+    description: "エンジンがかからない不動車も買取対象。状態問わずまずはご相談ください。",
   },
   {
     icon: Clock,
