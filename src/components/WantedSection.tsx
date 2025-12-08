@@ -8,6 +8,9 @@ import {
   useSensor,
   useSensors,
   DragEndEvent,
+  DragOverEvent,
+  DragOverlay,
+  DragStartEvent,
 } from "@dnd-kit/core";
 import {
   arrayMove,
@@ -64,6 +67,47 @@ const CategoryIcon = ({ category }: { category: WantedVehicle["category"] }) => 
   }
 };
 
+interface CardContentProps {
+  vehicle: WantedVehicle;
+  isHighPriority: boolean;
+  isDragging?: boolean;
+}
+
+const CardContent = ({ vehicle, isHighPriority, isDragging }: CardContentProps) => (
+  <div
+    className={`relative rounded-xl p-5 transition-all duration-300 ${
+      isDragging ? "opacity-90 shadow-2xl ring-2 ring-accent" : ""
+    } ${
+      isHighPriority
+        ? "bg-card border-2 border-accent/50"
+        : "bg-card border border-border"
+    }`}
+  >
+    {/* Priority Badge for High Priority */}
+    {isHighPriority && (
+      <div className="absolute -top-2 -left-2 bg-accent text-accent-foreground text-xs font-bold px-2 py-1 rounded-full shadow-lg">
+        HIGH
+      </div>
+    )}
+
+    {/* Category Badge */}
+    <div className="inline-flex items-center gap-1.5 bg-muted text-muted-foreground text-xs px-2 py-1 rounded-md mb-3">
+      <CategoryIcon category={vehicle.category} />
+      <span>{vehicle.category}</span>
+    </div>
+
+    {/* Vehicle Name */}
+    <h4 className={`font-display text-lg font-bold mb-2 ${isHighPriority ? "text-foreground" : "text-foreground"}`}>
+      {vehicle.name}
+    </h4>
+
+    {/* Tag */}
+    <p className={`text-sm font-medium ${isHighPriority ? "text-primary" : "text-muted-foreground"}`}>
+      {vehicle.tag}
+    </p>
+  </div>
+);
+
 interface SortableCardProps {
   vehicle: WantedVehicle;
   isHighPriority: boolean;
@@ -82,62 +126,59 @@ const SortableCard = ({ vehicle, isHighPriority }: SortableCardProps) => {
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    zIndex: isDragging ? 50 : undefined,
+    opacity: isDragging ? 0.4 : 1,
   };
 
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      className={`group relative rounded-xl p-5 transition-all duration-300 ${
-        isDragging ? "opacity-80 scale-105 shadow-2xl" : ""
-      } ${
-        isHighPriority
-          ? "bg-card border-2 border-accent/50 hover:border-accent hover:shadow-glow"
-          : "bg-card border border-border hover:border-primary/50 hover:bg-card/80"
-      }`}
-    >
+    <div ref={setNodeRef} style={style} className="relative group">
       {/* Drag Handle */}
       <div
         {...attributes}
         {...listeners}
-        className="absolute top-2 right-2 p-1.5 rounded-md bg-muted/50 hover:bg-muted cursor-grab active:cursor-grabbing opacity-50 hover:opacity-100 transition-opacity"
+        className="absolute top-2 right-2 z-10 p-1.5 rounded-md bg-muted/50 hover:bg-muted cursor-grab active:cursor-grabbing opacity-50 hover:opacity-100 transition-opacity"
       >
         <GripVertical className="h-4 w-4 text-muted-foreground" />
       </div>
-
-      {/* Priority Badge for High Priority */}
-      {isHighPriority && (
-        <div className="absolute -top-2 -left-2 bg-accent text-accent-foreground text-xs font-bold px-2 py-1 rounded-full shadow-lg">
-          HIGH
-        </div>
-      )}
-
-      {/* Category Badge */}
-      <div className="inline-flex items-center gap-1.5 bg-muted text-muted-foreground text-xs px-2 py-1 rounded-md mb-3">
-        <CategoryIcon category={vehicle.category} />
-        <span>{vehicle.category}</span>
-      </div>
-
-      {/* Vehicle Name */}
-      <h4
-        className={`font-display text-lg font-bold mb-2 transition-colors ${
+      <div
+        className={`rounded-xl p-5 transition-all duration-300 ${
           isHighPriority
-            ? "text-foreground group-hover:text-accent"
-            : "text-foreground group-hover:text-primary"
+            ? "bg-card border-2 border-accent/50 hover:border-accent hover:shadow-glow"
+            : "bg-card border border-border hover:border-primary/50 hover:bg-card/80"
         }`}
       >
-        {vehicle.name}
-      </h4>
+        {/* Priority Badge for High Priority */}
+        {isHighPriority && (
+          <div className="absolute -top-2 -left-2 bg-accent text-accent-foreground text-xs font-bold px-2 py-1 rounded-full shadow-lg">
+            HIGH
+          </div>
+        )}
 
-      {/* Tag */}
-      <p
-        className={`text-sm font-medium ${
-          isHighPriority ? "text-primary" : "text-muted-foreground"
-        }`}
-      >
-        {vehicle.tag}
-      </p>
+        {/* Category Badge */}
+        <div className="inline-flex items-center gap-1.5 bg-muted text-muted-foreground text-xs px-2 py-1 rounded-md mb-3">
+          <CategoryIcon category={vehicle.category} />
+          <span>{vehicle.category}</span>
+        </div>
+
+        {/* Vehicle Name */}
+        <h4
+          className={`font-display text-lg font-bold mb-2 transition-colors ${
+            isHighPriority
+              ? "text-foreground group-hover:text-accent"
+              : "text-foreground group-hover:text-primary"
+          }`}
+        >
+          {vehicle.name}
+        </h4>
+
+        {/* Tag */}
+        <p
+          className={`text-sm font-medium ${
+            isHighPriority ? "text-primary" : "text-muted-foreground"
+          }`}
+        >
+          {vehicle.tag}
+        </p>
+      </div>
     </div>
   );
 };
@@ -145,6 +186,7 @@ const SortableCard = ({ vehicle, isHighPriority }: SortableCardProps) => {
 const WantedSection = () => {
   const [highPriorityVehicles, setHighPriorityVehicles] = useState(initialHighPriority);
   const [normalPriorityVehicles, setNormalPriorityVehicles] = useState(initialNormalPriority);
+  const [activeVehicle, setActiveVehicle] = useState<WantedVehicle | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -157,27 +199,82 @@ const WantedSection = () => {
     })
   );
 
-  const handleHighPriorityDragEnd = (event: DragEndEvent) => {
+  const findContainer = (id: string) => {
+    if (highPriorityVehicles.find((v) => v.id === id)) return "high";
+    if (normalPriorityVehicles.find((v) => v.id === id)) return "normal";
+    return null;
+  };
+
+  const handleDragStart = (event: DragStartEvent) => {
+    const { active } = event;
+    const vehicle =
+      highPriorityVehicles.find((v) => v.id === active.id) ||
+      normalPriorityVehicles.find((v) => v.id === active.id);
+    setActiveVehicle(vehicle || null);
+  };
+
+  const handleDragOver = (event: DragOverEvent) => {
     const { active, over } = event;
-    if (over && active.id !== over.id) {
-      setHighPriorityVehicles((items) => {
-        const oldIndex = items.findIndex((item) => item.id === active.id);
-        const newIndex = items.findIndex((item) => item.id === over.id);
-        return arrayMove(items, oldIndex, newIndex);
-      });
+    if (!over) return;
+
+    const activeContainer = findContainer(active.id as string);
+    const overContainer = findContainer(over.id as string);
+
+    if (!activeContainer || !overContainer || activeContainer === overContainer) return;
+
+    // Moving between containers
+    if (activeContainer === "high" && overContainer === "normal") {
+      const vehicle = highPriorityVehicles.find((v) => v.id === active.id);
+      if (vehicle) {
+        setHighPriorityVehicles((prev) => prev.filter((v) => v.id !== active.id));
+        const overIndex = normalPriorityVehicles.findIndex((v) => v.id === over.id);
+        setNormalPriorityVehicles((prev) => {
+          const newItems = [...prev];
+          newItems.splice(overIndex >= 0 ? overIndex : prev.length, 0, { ...vehicle, priority: "Normal" });
+          return newItems;
+        });
+      }
+    } else if (activeContainer === "normal" && overContainer === "high") {
+      const vehicle = normalPriorityVehicles.find((v) => v.id === active.id);
+      if (vehicle) {
+        setNormalPriorityVehicles((prev) => prev.filter((v) => v.id !== active.id));
+        const overIndex = highPriorityVehicles.findIndex((v) => v.id === over.id);
+        setHighPriorityVehicles((prev) => {
+          const newItems = [...prev];
+          newItems.splice(overIndex >= 0 ? overIndex : prev.length, 0, { ...vehicle, priority: "High" });
+          return newItems;
+        });
+      }
     }
   };
 
-  const handleNormalPriorityDragEnd = (event: DragEndEvent) => {
+  const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    if (over && active.id !== over.id) {
-      setNormalPriorityVehicles((items) => {
-        const oldIndex = items.findIndex((item) => item.id === active.id);
-        const newIndex = items.findIndex((item) => item.id === over.id);
-        return arrayMove(items, oldIndex, newIndex);
-      });
+    setActiveVehicle(null);
+
+    if (!over || active.id === over.id) return;
+
+    const activeContainer = findContainer(active.id as string);
+    const overContainer = findContainer(over.id as string);
+
+    if (activeContainer === overContainer) {
+      if (activeContainer === "high") {
+        setHighPriorityVehicles((items) => {
+          const oldIndex = items.findIndex((item) => item.id === active.id);
+          const newIndex = items.findIndex((item) => item.id === over.id);
+          return arrayMove(items, oldIndex, newIndex);
+        });
+      } else if (activeContainer === "normal") {
+        setNormalPriorityVehicles((items) => {
+          const oldIndex = items.findIndex((item) => item.id === active.id);
+          const newIndex = items.findIndex((item) => item.id === over.id);
+          return arrayMove(items, oldIndex, newIndex);
+        });
+      }
     }
   };
+
+  const allIds = [...highPriorityVehicles.map((v) => v.id), ...normalPriorityVehicles.map((v) => v.id)];
 
   return (
     <section className="py-20 bg-gradient-to-b from-background to-card">
@@ -196,64 +293,59 @@ const WantedSection = () => {
             以下の車両・バイクは特に高価買取中です。お持ちの方はぜひご相談ください。
           </p>
           <p className="text-sm text-muted-foreground mt-2">
-            ※ カードをドラッグして並び替えできます
+            ※ カードをドラッグしてセクション間の移動・並び替えができます
           </p>
         </div>
 
-        {/* High Priority Section */}
-        <div className="mb-12">
-          <div className="flex items-center gap-2 mb-6">
-            <Star className="h-6 w-6 text-accent fill-accent" />
-            <h3 className="text-xl font-bold text-foreground">特に探しています</h3>
-          </div>
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCenter}
-            onDragEnd={handleHighPriorityDragEnd}
-          >
-            <SortableContext
-              items={highPriorityVehicles.map((v) => v.id)}
-              strategy={rectSortingStrategy}
-            >
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragStart={handleDragStart}
+          onDragOver={handleDragOver}
+          onDragEnd={handleDragEnd}
+        >
+          {/* High Priority Section */}
+          <div className="mb-12">
+            <div className="flex items-center gap-2 mb-6">
+              <Star className="h-6 w-6 text-accent fill-accent" />
+              <h3 className="text-xl font-bold text-foreground">特に探しています</h3>
+              <span className="text-sm text-muted-foreground">({highPriorityVehicles.length})</span>
+            </div>
+            <SortableContext items={allIds} strategy={rectSortingStrategy}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 min-h-[120px] p-2 rounded-xl border-2 border-dashed border-accent/30 bg-accent/5">
                 {highPriorityVehicles.map((vehicle) => (
-                  <SortableCard
-                    key={vehicle.id}
-                    vehicle={vehicle}
-                    isHighPriority={true}
-                  />
+                  <SortableCard key={vehicle.id} vehicle={vehicle} isHighPriority={true} />
                 ))}
               </div>
             </SortableContext>
-          </DndContext>
-        </div>
-
-        {/* Normal Priority Section */}
-        <div>
-          <div className="flex items-center gap-2 mb-6">
-            <h3 className="text-xl font-bold text-foreground">その他の強化車種</h3>
           </div>
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCenter}
-            onDragEnd={handleNormalPriorityDragEnd}
-          >
-            <SortableContext
-              items={normalPriorityVehicles.map((v) => v.id)}
-              strategy={rectSortingStrategy}
-            >
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+
+          {/* Normal Priority Section */}
+          <div>
+            <div className="flex items-center gap-2 mb-6">
+              <h3 className="text-xl font-bold text-foreground">その他の強化車種</h3>
+              <span className="text-sm text-muted-foreground">({normalPriorityVehicles.length})</span>
+            </div>
+            <SortableContext items={allIds} strategy={rectSortingStrategy}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 min-h-[120px] p-2 rounded-xl border-2 border-dashed border-border bg-muted/5">
                 {normalPriorityVehicles.map((vehicle) => (
-                  <SortableCard
-                    key={vehicle.id}
-                    vehicle={vehicle}
-                    isHighPriority={false}
-                  />
+                  <SortableCard key={vehicle.id} vehicle={vehicle} isHighPriority={false} />
                 ))}
               </div>
             </SortableContext>
-          </DndContext>
-        </div>
+          </div>
+
+          {/* Drag Overlay */}
+          <DragOverlay>
+            {activeVehicle ? (
+              <CardContent
+                vehicle={activeVehicle}
+                isHighPriority={activeVehicle.priority === "High"}
+                isDragging
+              />
+            ) : null}
+          </DragOverlay>
+        </DndContext>
       </div>
     </section>
   );
