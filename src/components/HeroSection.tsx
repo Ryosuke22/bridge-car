@@ -29,7 +29,7 @@ const HeroSection = ({
           <h1 className="font-display text-5xl md:text-7xl lg:text-8xl leading-tight">
             <span className="text-foreground">その車、海外なら</span>
             <br />
-            <span className="text-gradient">もっと高く売れます</span>
+            <span className="text-gradient whitespace-nowrap">もっと高く売れます</span>
           </h1>
 
           {/* Subheadline */}
