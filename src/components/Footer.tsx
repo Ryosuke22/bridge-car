@@ -1,0 +1,58 @@
+import { Car, Mail, Phone, MapPin } from "lucide-react";
+
+const Footer = () => {
+  return (
+    <footer className="py-12 bg-background border-t border-border/50">
+      <div className="container mx-auto px-4">
+        <div className="grid md:grid-cols-3 gap-8 mb-8">
+          <div>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
+                <Car className="w-6 h-6 text-primary-foreground" />
+              </div>
+              <span className="font-display text-2xl">EXPORT BUYERS</span>
+            </div>
+            <p className="text-muted-foreground">
+              輸出向け中古車・バイク専門の買取サービス。
+              他社で0円査定された車両も適正価格で買取します。
+            </p>
+          </div>
+
+          <div>
+            <h3 className="font-display text-xl mb-4 text-foreground">買取対象</h3>
+            <ul className="space-y-2 text-muted-foreground">
+              <li>• 過走行車（10万km以上）</li>
+              <li>• 低年式車（15年以上）</li>
+              <li>• 事故現状車・不動車</li>
+              <li>• カスタムバイク</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="font-display text-xl mb-4 text-foreground">お問い合わせ</h3>
+            <ul className="space-y-3 text-muted-foreground">
+              <li className="flex items-center gap-2">
+                <Mail className="w-4 h-4 text-primary" />
+                info@exportbuyers.example.com
+              </li>
+              <li className="flex items-center gap-2">
+                <Phone className="w-4 h-4 text-primary" />
+                0120-XXX-XXX
+              </li>
+              <li className="flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-primary" />
+                東京都港区XX-XX
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="pt-8 border-t border-border/30 text-center text-sm text-muted-foreground">
+          <p>© 2024 Export Buyers. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
