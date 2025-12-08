@@ -53,13 +53,10 @@ const HeroSection = ({
 
           {/* Trust Indicators */}
           <div className="flex flex-wrap justify-center gap-8 pt-8 text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <span className="text-2xl font-display text-primary">10万km+</span>
-              <span className="text-sm">過走行車OK</span>
-            </div>
+            
             <div className="flex items-center gap-2">
               <span className="text-2xl font-display text-primary">初年度から25年以上経過の車のみ</span>
-              <span className="text-sm">低年式OK</span>
+              
             </div>
             <div className="flex items-center gap-2">
               <span className="text-2xl font-display text-primary">
