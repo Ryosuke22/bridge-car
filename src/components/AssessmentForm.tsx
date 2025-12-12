@@ -228,7 +228,7 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
                           <FormItem>
                             <FormLabel>車種名 *</FormLabel>
                             <FormControl>
-                              <Input placeholder="例: Land Cruiser" {...field} className="h-12 bg-input border-border/50" />
+                              <Input placeholder="例: ランドクルーザー" {...field} className="h-12 bg-input border-border/50" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
