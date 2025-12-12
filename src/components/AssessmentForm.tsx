@@ -12,7 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Switch } from "@/components/ui/switch";
 import { Car, Bike, Send, Upload, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
-import { getCarModels, getBikeModels } from "@/data/wantedVehicles";
+import { useWantedVehicles, getCarModels, getBikeModels } from "@/hooks/useWantedVehicles";
 
 const carSchema = z.object({
   vehicleType: z.literal("car"),
@@ -55,7 +55,10 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
   const [vehicleType, setVehicleType] = useState<"car" | "bike">("car");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-
+  const { data: vehicles = [] } = useWantedVehicles();
+  
+  const carModels = getCarModels(vehicles);
+  const bikeModels = getBikeModels(vehicles);
   const carForm = useForm<CarFormData>({
     resolver: zodResolver(carSchema),
     defaultValues: {
@@ -235,7 +238,7 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
-                                {getCarModels().map((model) => (
+                                {carModels.map((model) => (
                                   <SelectItem key={model} value={model}>
                                     {model}
                                   </SelectItem>
@@ -480,7 +483,7 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
-                                {getBikeModels().map((model) => (
+                                {bikeModels.map((model) => (
                                   <SelectItem key={model} value={model}>
                                     {model}
                                   </SelectItem>
