@@ -16,7 +16,7 @@ const Header = ({
             <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
               <Car className="w-6 h-6 text-primary-foreground" />
             </div>
-            <span className="font-display text-xl md:text-2xl text-foreground">車バイク​買取のブリッジ </span>
+            <span className="font-display text-2xl md:text-3xl text-foreground">車種限定買取　ブリッジ</span>
           </a>
 
           {/* Desktop Navigation */}
