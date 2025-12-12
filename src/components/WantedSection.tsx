@@ -352,9 +352,7 @@ const WantedSection = () => {
             <Flame className="h-5 w-5 animate-pulse" />
           </div>
           <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-4">買取リスト</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            以下の車両・バイクは特に高価買取中です。お持ちの方はぜひご相談ください。
-          </p>
+          <p className="text-muted-foreground max-w-2xl mx-auto">以下の車両・バイクを高価買取中です。お持ちの方はぜひご相談ください。</p>
           <p className="text-sm text-muted-foreground mt-2">
             ※ カードをドラッグしてセクション間の移動・並び替え、ホバーで削除ができます
           </p>
