@@ -1,4 +1,4 @@
-import { Ship, Smartphone, TrendingUp, Globe, Shield, Clock } from "lucide-react";
+import { Ship, Smartphone, TrendingUp, Globe, MapPin, Clock } from "lucide-react";
 
 const features = [
   {
@@ -22,9 +22,9 @@ const features = [
     description: "来店不要！写真を送るだけで査定完了。全国どこからでもお気軽にお申し込みいただけます。",
   },
   {
-    icon: Shield,
-    title: "不動車も買取OK",
-    description: "エンジンがかからない不動車も買取対象。状態問わずまずはご相談ください。",
+    icon: MapPin,
+    title: "全国対応",
+    description: "北海道から沖縄まで全国どこでも対応。離島も含め、日本全国から買取のご依頼を承ります。",
   },
   {
     icon: Clock,
