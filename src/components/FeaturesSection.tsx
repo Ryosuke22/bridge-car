@@ -1,4 +1,4 @@
-import { Ship, Wrench, TrendingUp, Globe, Shield, Clock } from "lucide-react";
+import { Ship, Smartphone, TrendingUp, Globe, Shield, Clock } from "lucide-react";
 
 const features = [
   {
@@ -17,9 +17,9 @@ const features = [
     description: "買取対象は2000年以降に生産された車両・バイクです。輸出需要の高い年式を中心に高価買取。",
   },
   {
-    icon: Wrench,
-    title: "カスタムプラス査定",
-    description: "カスタムパーツも適正評価。他店では評価されない改造車も大歓迎。",
+    icon: Globe,
+    title: "オンライン完結査定",
+    description: "来店不要！写真を送るだけで査定完了。全国どこからでもお気軽にお申し込みいただけます。",
   },
   {
     icon: Shield,
