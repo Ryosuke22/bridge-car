@@ -18,7 +18,7 @@ const features = [
   },
   {
     icon: Globe,
-    title: "オンライン完結査定",
+    title: "オンライン査定",
     description: "来店不要！写真を送るだけで査定完了。全国どこからでもお気軽にお申し込みいただけます。",
   },
   {
