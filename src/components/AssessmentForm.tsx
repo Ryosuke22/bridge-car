@@ -12,6 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Switch } from "@/components/ui/switch";
 import { Car, Bike, Send, Upload, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
+import { getCarModels, getBikeModels } from "@/data/wantedVehicles";
 
 const carSchema = z.object({
   vehicleType: z.literal("car"),
@@ -226,10 +227,21 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
                         name="modelName"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>車種名 *</FormLabel>
-                            <FormControl>
-                              <Input placeholder="例: ランドクルーザー" {...field} className="h-12 bg-input border-border/50" />
-                            </FormControl>
+                            <FormLabel>車種を選択 *</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger className="h-12 bg-input border-border/50">
+                                  <SelectValue placeholder="車種を選択してください" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {getCarModels().map((model) => (
+                                  <SelectItem key={model} value={model}>
+                                    {model}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -460,10 +472,21 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
                         name="modelName"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>車種名 *</FormLabel>
-                            <FormControl>
-                              <Input placeholder="例: CB400" {...field} className="h-12 bg-input border-border/50" />
-                            </FormControl>
+                            <FormLabel>車種を選択 *</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger className="h-12 bg-input border-border/50">
+                                  <SelectValue placeholder="車種を選択してください" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {getBikeModels().map((model) => (
+                                  <SelectItem key={model} value={model}>
+                                    {model}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
                             <FormMessage />
                           </FormItem>
                         )}
