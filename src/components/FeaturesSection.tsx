@@ -36,8 +36,8 @@ const FeaturesSection = () => {
           <h2 className="font-display text-4xl md:text-6xl mb-4">
             なぜ<span className="text-gradient">高く買える</span>のか？
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">私たちには海外への直輸出ルートがあります。 
-だから、国内相場に縛られない適正価格で買取できるのです。</p>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">私たちには海外への直輸出ルートがあります。  
+そのため国内相場に縛られない適正価格で買取できるのです。</p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
