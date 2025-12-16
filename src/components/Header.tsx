@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, LogIn, LogOut, Shield } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
-import logoImage from "@/assets/logo.png";
+import headerLogo from "@/assets/header-logo.png";
 interface HeaderProps {
   onScrollToForm: () => void;
 }
@@ -25,11 +25,8 @@ const Header = ({
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-2">
-            <img src={logoImage} alt="ブリッジロゴ" className="h-12 w-auto object-contain" />
-            <span className="font-display text-2xl text-foreground md:text-2xl">
-              車種限定買取のブリッジ
-            </span>
+          <a href="/" className="flex items-center">
+            <img src={headerLogo} alt="車種限定買取のブリッジ" className="h-10 w-auto object-contain" />
           </a>
 
           {/* Desktop Navigation */}
