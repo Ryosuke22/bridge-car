@@ -9,11 +9,10 @@ import { toast } from 'sonner';
 import { Lock, Mail, ArrowLeft } from 'lucide-react';
 
 const Auth = () => {
-  const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn, signUp, user } = useAuth();
+  const { signIn, user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,30 +26,16 @@ const Auth = () => {
     setLoading(true);
 
     try {
-      if (isLogin) {
-        const { error } = await signIn(email, password);
-        if (error) {
-          if (error.message.includes('Invalid login credentials')) {
-            toast.error('メールアドレスまたはパスワードが正しくありません');
-          } else {
-            toast.error(error.message);
-          }
+      const { error } = await signIn(email, password);
+      if (error) {
+        if (error.message.includes('Invalid login credentials')) {
+          toast.error('メールアドレスまたはパスワードが正しくありません');
         } else {
-          toast.success('ログインしました');
-          navigate('/');
+          toast.error(error.message);
         }
       } else {
-        const { error } = await signUp(email, password);
-        if (error) {
-          if (error.message.includes('already registered')) {
-            toast.error('このメールアドレスは既に登録されています');
-          } else {
-            toast.error(error.message);
-          }
-        } else {
-          toast.success('アカウントを作成しました');
-          navigate('/');
-        }
+        toast.success('ログインしました');
+        navigate('/');
       }
     } finally {
       setLoading(false);
@@ -70,12 +55,10 @@ const Auth = () => {
             トップに戻る
           </Button>
           <CardTitle className="text-2xl font-display">
-            {isLogin ? '管理者ログイン' : 'アカウント作成'}
+            管理者ログイン
           </CardTitle>
           <CardDescription>
-            {isLogin
-              ? '管理者アカウントでログインしてください'
-              : '新しいアカウントを作成します'}
+            管理者アカウントでログインしてください
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -112,18 +95,9 @@ const Auth = () => {
               </div>
             </div>
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? '処理中...' : isLogin ? 'ログイン' : 'アカウント作成'}
+              {loading ? '処理中...' : 'ログイン'}
             </Button>
           </form>
-          <div className="mt-4 text-center text-sm">
-            <button
-              type="button"
-              onClick={() => setIsLogin(!isLogin)}
-              className="text-primary hover:underline"
-            >
-              {isLogin ? 'アカウントをお持ちでない方' : 'すでにアカウントをお持ちの方'}
-            </button>
-          </div>
         </CardContent>
       </Card>
     </div>
