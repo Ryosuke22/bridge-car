@@ -9,7 +9,7 @@ const features = [{
   description: "アフリカ、中東、東南アジアなど、日本車を求める市場へ直接アプローチ。"
 }, {
   icon: TrendingUp,
-  title: "2000年以降の車両",
+  title: "初年度登録平成12年以前の車両",
   description: "買取対象は2000年以降に生産された車両・バイクです。輸出需要の高い年式を中心に高価買取。"
 }, {
   icon: Globe,
