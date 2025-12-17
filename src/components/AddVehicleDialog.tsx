@@ -63,7 +63,7 @@ const AddVehicleDialog = ({ maxSortOrder }: AddVehicleDialogProps) => {
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="例: Toyota Supra"
+              placeholder="例: スカイライン GT-R"
               required
             />
           </div>
