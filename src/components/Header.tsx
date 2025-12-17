@@ -26,7 +26,7 @@ const Header = ({
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <a href="/" className="flex items-center">
-            <img src={headerLogo} alt="車種限定買取のブリッジ" className="h-10 w-auto object-contain" />
+            <img src={headerLogo} alt="車種限定買取のブリッジ" className="h-12 w-auto object-contain" />
           </a>
 
           {/* Desktop Navigation */}
