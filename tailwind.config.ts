@@ -16,6 +16,7 @@ export default {
       fontFamily: {
         sans: ["Inter", "sans-serif"],
         display: ["Shippori Antique", "sans-serif"],
+        card: ["Kosugi Maru", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
