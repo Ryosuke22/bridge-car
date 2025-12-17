@@ -9,6 +9,7 @@ import {
   WantedVehicle 
 } from "@/hooks/useWantedVehicles";
 import AddVehicleDialog from "./AddVehicleDialog";
+import EditVehicleDialog from "./EditVehicleDialog";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
 import {
@@ -60,9 +61,10 @@ interface VehicleCardProps {
   isAdmin: boolean;
   onDelete: (id: string) => void;
   onTogglePriority: (vehicle: WantedVehicle) => void;
+  onEdit: (vehicle: WantedVehicle) => void;
 }
 
-const VehicleCard = ({ vehicle, isAdmin, onDelete, onTogglePriority }: VehicleCardProps) => {
+const VehicleCard = ({ vehicle, isAdmin, onDelete, onTogglePriority, onEdit }: VehicleCardProps) => {
   const isHighPriority = vehicle.is_high_priority;
   
   return (
@@ -81,6 +83,14 @@ const VehicleCard = ({ vehicle, isAdmin, onDelete, onTogglePriority }: VehicleCa
 
       {isAdmin && (
         <div className="absolute top-2 right-2 flex gap-1">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-7 w-7"
+            onClick={() => onEdit(vehicle)}
+          >
+            <Edit2 className="h-4 w-4" />
+          </Button>
           <Button
             variant="ghost"
             size="icon"
@@ -121,9 +131,10 @@ interface SortableVehicleCardProps {
   isAdmin: boolean;
   onDelete: (id: string) => void;
   onTogglePriority: (vehicle: WantedVehicle) => void;
+  onEdit: (vehicle: WantedVehicle) => void;
 }
 
-const SortableVehicleCard = ({ vehicle, isAdmin, onDelete, onTogglePriority }: SortableVehicleCardProps) => {
+const SortableVehicleCard = ({ vehicle, isAdmin, onDelete, onTogglePriority, onEdit }: SortableVehicleCardProps) => {
   const {
     attributes,
     listeners,
@@ -155,6 +166,7 @@ const SortableVehicleCard = ({ vehicle, isAdmin, onDelete, onTogglePriority }: S
         isAdmin={isAdmin}
         onDelete={onDelete}
         onTogglePriority={onTogglePriority}
+        onEdit={onEdit}
       />
     </div>
   );
@@ -167,6 +179,7 @@ const WantedSection = () => {
   const reorderVehicles = useReorderVehicles();
   const updateVehicle = useUpdateVehicle();
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [editingVehicle, setEditingVehicle] = useState<WantedVehicle | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -288,6 +301,7 @@ const WantedSection = () => {
                       isAdmin={isAdmin}
                       onDelete={setDeleteId}
                       onTogglePriority={handleTogglePriority}
+                      onEdit={setEditingVehicle}
                     />
                   ))}
                 </div>
@@ -314,6 +328,7 @@ const WantedSection = () => {
                       isAdmin={isAdmin}
                       onDelete={setDeleteId}
                       onTogglePriority={handleTogglePriority}
+                      onEdit={setEditingVehicle}
                     />
                   ))}
                 </div>
@@ -339,6 +354,7 @@ const WantedSection = () => {
                     isAdmin={false}
                     onDelete={() => {}}
                     onTogglePriority={() => {}}
+                    onEdit={() => {}}
                   />
                 ))}
               </div>
@@ -360,6 +376,7 @@ const WantedSection = () => {
                     isAdmin={false}
                     onDelete={() => {}}
                     onTogglePriority={() => {}}
+                    onEdit={() => {}}
                   />
                 ))}
               </div>
@@ -385,6 +402,13 @@ const WantedSection = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Edit Vehicle Dialog */}
+      <EditVehicleDialog
+        vehicle={editingVehicle}
+        open={!!editingVehicle}
+        onOpenChange={(open) => !open && setEditingVehicle(null)}
+      />
     </section>
   );
 };
