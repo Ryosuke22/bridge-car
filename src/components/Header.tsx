@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, LogIn, LogOut, Shield } from "lucide-react";
+import { Menu, X, LogIn, Shield } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import headerLogo from "@/assets/header-logo.png";
@@ -41,21 +41,19 @@ const Header = ({
               無料査定を申し込む
             </Button>
             
-            {user ? <div className="flex items-center gap-2">
-                {isAdmin && <span className="flex items-center gap-1 text-xs text-accent bg-accent/20 px-2 py-1 rounded-full">
-                    <Shield className="h-3 w-3" />
+            {user ? (
+                <Button variant="ghost" size="sm" onClick={handleSignOut} className="text-accent hover:text-accent">
+                  <Shield className="h-4 w-4 mr-1" />
+                  管理者ログアウト
+                </Button>
+              ) : (
+                <Link to="/auth">
+                  <Button variant="ghost" size="sm">
+                    <LogIn className="h-4 w-4 mr-1" />
                     管理者
-                  </span>}
-                <Button variant="ghost" size="sm" onClick={handleSignOut}>
-                  <LogOut className="h-4 w-4 mr-1" />
-                  ログアウト
-                </Button>
-              </div> : <Link to="/auth">
-                <Button variant="ghost" size="sm">
-                  <LogIn className="h-4 w-4 mr-1" />
-                  管理者
-                </Button>
-              </Link>}
+                  </Button>
+                </Link>
+              )}
           </nav>
 
           {/* Mobile Menu Button */}
@@ -80,24 +78,19 @@ const Header = ({
                 無料査定を申し込む
               </Button>
               
-              {user ? <div className="flex items-center gap-2">
-                  {isAdmin && <span className="flex items-center gap-1 text-xs text-accent bg-accent/20 px-2 py-1 rounded-full">
-                      <Shield className="h-3 w-3" />
-                      管理者
-                    </span>}
-                  <Button variant="ghost" size="sm" onClick={() => {
-              handleSignOut();
-              setIsMenuOpen(false);
-            }}>
-                    <LogOut className="h-4 w-4 mr-1" />
-                    ログアウト
-                  </Button>
-                </div> : <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
+              {user ? (
+                <Button variant="ghost" size="sm" onClick={() => { handleSignOut(); setIsMenuOpen(false); }} className="text-accent hover:text-accent">
+                  <Shield className="h-4 w-4 mr-1" />
+                  管理者ログアウト
+                </Button>
+              ) : (
+                <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
                   <Button variant="ghost" size="sm">
                     <LogIn className="h-4 w-4 mr-1" />
                     管理者
                   </Button>
-                </Link>}
+                </Link>
+              )}
             </div>
           </nav>}
       </div>
