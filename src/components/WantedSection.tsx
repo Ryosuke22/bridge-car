@@ -115,7 +115,7 @@ const VehicleCard = ({ vehicle, isAdmin, onDelete, onTogglePriority, onEdit }: V
         <span>{vehicle.category}</span>
       </div>
 
-      <h4 className="font-display text-lg font-bold mb-2 text-foreground">
+      <h4 className="font-card text-lg font-bold mb-2 text-foreground">
         {vehicle.name}
       </h4>
 
