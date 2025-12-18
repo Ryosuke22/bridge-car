@@ -82,28 +82,37 @@ const VehicleCard = ({ vehicle, isAdmin, onDelete, onTogglePriority, onEdit }: V
       )}
 
       {isAdmin && (
-        <div className="absolute top-2 right-2 flex gap-1">
+        <div className="absolute top-2 right-2 flex gap-1 z-20">
           <Button
             variant="ghost"
             size="icon"
-            className="h-7 w-7"
-            onClick={() => onEdit(vehicle)}
+            className="h-7 w-7 pointer-events-auto"
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit(vehicle);
+            }}
           >
             <Edit2 className="h-4 w-4" />
           </Button>
           <Button
             variant="ghost"
             size="icon"
-            className="h-7 w-7"
-            onClick={() => onTogglePriority(vehicle)}
+            className="h-7 w-7 pointer-events-auto"
+            onClick={(e) => {
+              e.stopPropagation();
+              onTogglePriority(vehicle);
+            }}
           >
             <Star className={`h-4 w-4 ${isHighPriority ? 'fill-accent text-accent' : ''}`} />
           </Button>
           <Button
             variant="ghost"
             size="icon"
-            className="h-7 w-7 text-destructive hover:text-destructive"
-            onClick={() => onDelete(vehicle.id)}
+            className="h-7 w-7 text-destructive hover:text-destructive pointer-events-auto"
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete(vehicle.id);
+            }}
           >
             <Trash2 className="h-4 w-4" />
           </Button>
