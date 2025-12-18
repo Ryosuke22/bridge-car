@@ -124,13 +124,9 @@ const VehicleCard = ({ vehicle, isAdmin, onDelete, onTogglePriority, onEdit }: V
         <span>{vehicle.category}</span>
       </div>
 
-      <h4 className="font-card text-lg font-bold mb-2 text-foreground">
+      <h4 className="font-card text-lg font-bold text-foreground">
         {vehicle.name}
       </h4>
-
-      <p className={`text-sm font-medium ${isHighPriority ? "text-primary" : "text-muted-foreground"}`}>
-        {vehicle.tag}
-      </p>
     </div>
   );
 };
