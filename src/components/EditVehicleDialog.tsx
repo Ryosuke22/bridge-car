@@ -27,7 +27,6 @@ interface EditVehicleDialogProps {
 const EditVehicleDialog = ({ vehicle, open, onOpenChange }: EditVehicleDialogProps) => {
   const [name, setName] = useState("");
   const [category, setCategory] = useState<WantedVehicle["category"]>("Car");
-  const [tag, setTag] = useState("");
   
   const updateVehicle = useUpdateVehicle();
 
@@ -35,7 +34,6 @@ const EditVehicleDialog = ({ vehicle, open, onOpenChange }: EditVehicleDialogPro
     if (vehicle) {
       setName(vehicle.name);
       setCategory(vehicle.category);
-      setTag(vehicle.tag);
     }
   }, [vehicle]);
 
@@ -43,8 +41,8 @@ const EditVehicleDialog = ({ vehicle, open, onOpenChange }: EditVehicleDialogPro
     e.preventDefault();
     
     if (!vehicle) return;
-    if (!name.trim() || !tag.trim()) {
-      toast.error("名前とタグは必須です");
+    if (!name.trim()) {
+      toast.error("名前は必須です");
       return;
     }
 
@@ -53,7 +51,6 @@ const EditVehicleDialog = ({ vehicle, open, onOpenChange }: EditVehicleDialogPro
         id: vehicle.id,
         name: name.trim(),
         category,
-        tag: tag.trim(),
       });
       toast.success("車種を更新しました");
       onOpenChange(false);
@@ -93,15 +90,6 @@ const EditVehicleDialog = ({ vehicle, open, onOpenChange }: EditVehicleDialogPro
             </Select>
           </div>
           
-          <div className="space-y-2">
-            <Label htmlFor="edit-tag">タグ（理由）</Label>
-            <Input
-              id="edit-tag"
-              value={tag}
-              onChange={(e) => setTag(e.target.value)}
-              placeholder="例: 輸出人気"
-            />
-          </div>
           
           <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
