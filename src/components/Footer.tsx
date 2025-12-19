@@ -1,14 +1,13 @@
-import { Car, Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
+import headerLogo from "@/assets/header-logo.png";
+
 const Footer = () => {
   return <footer className="py-12 bg-background border-t border-border/50">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-                <Car className="w-6 h-6 text-primary-foreground" />
-              </div>
-              <span className="font-display text-2xl">EXPORT BUYERS</span>
+            <div className="flex items-center mb-4">
+              <img src={headerLogo} alt="車種限定買取のブリッジ" className="h-12 w-auto object-contain" />
             </div>
             <p className="text-muted-foreground">
               輸出向け中古車・バイク専門の買取サービス。他社で0円査定された車両も適正価格で買取します。
