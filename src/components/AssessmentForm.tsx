@@ -25,6 +25,8 @@ const carSchema = z.object({
   mileage: z.string().optional(),
   touchPenMarks: z.boolean().optional(),
   accidentHistory: z.boolean().optional(),
+  hasCustom: z.boolean().default(false),
+  customDetails: z.string().optional(),
   name: z.string().min(1, "お名前を入力してください"),
   email: z.string().email("正しいメールアドレスを入力してください"),
   phone: z.string().optional(),
@@ -67,6 +69,7 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
     defaultValues: {
       vehicleType: "car",
       modelName: "",
+      hasCustom: false,
       name: "",
       email: "",
       phone: "",
@@ -108,6 +111,8 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
           mileage: (data as CarFormData).mileage ? parseInt((data as CarFormData).mileage!) : null,
           touch_pen_marks: (data as CarFormData).touchPenMarks ?? null,
           accident_history: (data as CarFormData).accidentHistory ?? null,
+          has_custom: (data as CarFormData).hasCustom,
+          custom_details: (data as CarFormData).customDetails || null,
         }),
         ...(data.vehicleType === "bike" && {
           displacement: (data as BikeFormData).displacement ? parseInt((data as BikeFormData).displacement!) : null,
@@ -406,6 +411,47 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
                         )}
                       />
                     </div>
+
+                    <FormField
+                      control={carForm.control}
+                      name="hasCustom"
+                      render={({ field }) => (
+                        <FormItem className="flex items-center justify-between rounded-xl border border-border/50 p-4 bg-secondary/20">
+                          <div>
+                            <FormLabel className="text-base font-medium">カスタムの有無</FormLabel>
+                            <p className="text-sm text-muted-foreground">
+                              カスタムパーツもプラス査定対象です
+                            </p>
+                          </div>
+                          <FormControl>
+                            <Switch
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+
+                    {carForm.watch("hasCustom") && (
+                      <FormField
+                        control={carForm.control}
+                        name="customDetails"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>カスタム内容</FormLabel>
+                            <FormControl>
+                              <Textarea 
+                                placeholder="カスタムパーツや改造内容を入力してください（例：エアロパーツ、ホイール交換など）" 
+                                {...field} 
+                                className="min-h-[100px] bg-input border-border/50" 
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    )}
 
                     {/* Contact Info */}
                     <div className="pt-6 border-t border-border/50">
