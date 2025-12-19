@@ -48,6 +48,7 @@ export type Database = {
           accident_history: boolean | null
           admin_notes: string | null
           created_at: string | null
+          custom_details: string | null
           displacement: number | null
           email: string
           engine_status: Database["public"]["Enums"]["engine_status"] | null
@@ -75,6 +76,7 @@ export type Database = {
           accident_history?: boolean | null
           admin_notes?: string | null
           created_at?: string | null
+          custom_details?: string | null
           displacement?: number | null
           email: string
           engine_status?: Database["public"]["Enums"]["engine_status"] | null
@@ -102,6 +104,7 @@ export type Database = {
           accident_history?: boolean | null
           admin_notes?: string | null
           created_at?: string | null
+          custom_details?: string | null
           displacement?: number | null
           email?: string
           engine_status?: Database["public"]["Enums"]["engine_status"] | null

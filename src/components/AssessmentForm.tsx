@@ -36,6 +36,7 @@ const bikeSchema = z.object({
   modelName: z.string().min(1, "車種名を入力してください"),
   displacement: z.string().optional(),
   hasCustom: z.boolean().default(false),
+  customDetails: z.string().optional(),
   engineStatus: z.enum(["running", "not_running"]).optional(),
   inspectionRemaining: z.string().optional(),
   touchPenMarks: z.boolean().optional(),
@@ -111,6 +112,7 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
         ...(data.vehicleType === "bike" && {
           displacement: (data as BikeFormData).displacement ? parseInt((data as BikeFormData).displacement!) : null,
           has_custom: (data as BikeFormData).hasCustom,
+          custom_details: (data as BikeFormData).customDetails || null,
           engine_status: (data as BikeFormData).engineStatus || null,
           inspection_remaining: (data as BikeFormData).inspectionRemaining || null,
           touch_pen_marks: (data as BikeFormData).touchPenMarks ?? null,
@@ -592,6 +594,26 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
                         </FormItem>
                       )}
                     />
+
+                    {bikeForm.watch("hasCustom") && (
+                      <FormField
+                        control={bikeForm.control}
+                        name="customDetails"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>カスタム内容</FormLabel>
+                            <FormControl>
+                              <Textarea 
+                                placeholder="カスタムパーツや改造内容を入力してください（例：マフラー交換、シート変更など）" 
+                                {...field} 
+                                className="min-h-[100px] bg-input border-border/50" 
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    )}
 
                     <div className="grid md:grid-cols-2 gap-4">
                       <FormField
