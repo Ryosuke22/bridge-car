@@ -1,59 +1,37 @@
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Car, Bike, Gauge } from "lucide-react";
-
-interface PriceData {
-  model_name: string;
-  min_price: number;
-  max_price: number;
-}
+import { useWantedVehicles } from "@/hooks/useWantedVehicles";
 
 const SpeedometerSimulator = () => {
   const [vehicleType, setVehicleType] = useState<"car" | "bike">("car");
-  const [models, setModels] = useState<PriceData[]>([]);
   const [selectedModel, setSelectedModel] = useState<string>("");
-  const [priceData, setPriceData] = useState<PriceData | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [needleRotation, setNeedleRotation] = useState(-135);
+  
+  const { data: wantedVehicles = [] } = useWantedVehicles();
+
+  // Filter vehicles by category based on selected type
+  const filteredVehicles = wantedVehicles.filter(v => {
+    if (vehicleType === "car") {
+      return v.category === "Car" || v.category === "Car/Bike";
+    } else {
+      return v.category === "Bike" || v.category === "Car/Bike";
+    }
+  });
 
   useEffect(() => {
-    fetchModels();
+    setSelectedModel("");
+    setNeedleRotation(-135);
   }, [vehicleType]);
 
   useEffect(() => {
     if (selectedModel) {
-      const model = models.find(m => m.model_name === selectedModel);
-      if (model) {
-        setPriceData(model);
-        // Calculate needle rotation based on average price (max 2M for full scale)
-        const avgPrice = (model.min_price + model.max_price) / 2;
-        const rotation = Math.min((avgPrice / 2000000) * 270 - 135, 135);
-        setNeedleRotation(rotation);
-      }
+      // Simulate price calculation based on selection
+      const rotation = Math.random() * 200 - 100; // Random for demo
+      setNeedleRotation(rotation);
     }
-  }, [selectedModel, models]);
-
-  const fetchModels = async () => {
-    setIsLoading(true);
-    const { data, error } = await supabase
-      .from("price_master")
-      .select("model_name, min_price, max_price")
-      .eq("vehicle_type", vehicleType);
-
-    if (!error && data) {
-      setModels(data);
-    }
-    setIsLoading(false);
-    setSelectedModel("");
-    setPriceData(null);
-    setNeedleRotation(-135);
-  };
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("ja-JP").format(price);
-  };
+  }, [selectedModel]);
 
   return (
     <section className="py-20 relative overflow-hidden">
@@ -98,9 +76,9 @@ const SpeedometerSimulator = () => {
                   <SelectValue placeholder="車種を選んでください" />
                 </SelectTrigger>
                 <SelectContent>
-                  {models.map((model) => (
-                    <SelectItem key={model.model_name} value={model.model_name}>
-                      {model.model_name}
+                  {filteredVehicles.map((vehicle) => (
+                    <SelectItem key={vehicle.id} value={vehicle.name}>
+                      {vehicle.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -135,7 +113,7 @@ const SpeedometerSimulator = () => {
                       stroke="url(#speedGradient)"
                       strokeWidth="12"
                       strokeLinecap="round"
-                      strokeDasharray={priceData ? `${((priceData.min_price + priceData.max_price) / 4000000) * 250} 250` : "0 250"}
+                      strokeDasharray={selectedModel ? "200 250" : "0 250"}
                       style={{ transition: "stroke-dasharray 1s ease-out" }}
                     />
                     {/* Needle */}
@@ -168,26 +146,21 @@ const SpeedometerSimulator = () => {
                 </div>
               </div>
 
-              {/* Price Display */}
-              {priceData ? (
+              {/* Selection Display */}
+              {selectedModel ? (
                 <div className="text-center animate-scale-in">
-                  <p className="text-muted-foreground mb-2">輸出/マニア向け相場目安</p>
-                  <div className="font-display text-4xl md:text-5xl text-gradient">
-                    ¥{formatPrice(priceData.min_price)} 〜 ¥{formatPrice(priceData.max_price)}
+                  <p className="text-muted-foreground mb-2">選択された車種</p>
+                  <div className="font-display text-3xl md:text-4xl text-gradient">
+                    {selectedModel}
                   </div>
                   <p className="text-sm text-primary mt-3 flex items-center justify-center gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-                    状態やカスタムによってはさらにプラス査定！
+                    高価買取強化中！
                   </p>
                 </div>
-              ) : selectedModel === "" ? (
-                <div className="text-center text-muted-foreground">
-                  <p>車種を選択すると相場が表示されます</p>
-                </div>
               ) : (
-                <div className="text-center animate-pulse">
-                  <p className="text-primary font-medium">データ照会中...</p>
-                  <p className="text-sm text-muted-foreground mt-1">高価買取の可能性があります！</p>
+                <div className="text-center text-muted-foreground">
+                  <p>車種を選択すると詳細が表示されます</p>
                 </div>
               )}
             </div>
