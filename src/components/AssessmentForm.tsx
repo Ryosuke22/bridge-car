@@ -23,6 +23,7 @@ const carSchema = z.object({
   handlePosition: z.enum(["right", "left"]).optional(),
   year: z.string().optional(),
   mileage: z.string().optional(),
+  touchPenMarks: z.boolean().optional(),
   name: z.string().min(1, "お名前を入力してください"),
   email: z.string().email("正しいメールアドレスを入力してください"),
   phone: z.string().optional(),
@@ -101,6 +102,7 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
           handle_position: (data as CarFormData).handlePosition || null,
           year: (data as CarFormData).year ? parseInt((data as CarFormData).year!) : null,
           mileage: (data as CarFormData).mileage ? parseInt((data as CarFormData).mileage!) : null,
+          touch_pen_marks: (data as CarFormData).touchPenMarks ?? null,
         }),
         ...(data.vehicleType === "bike" && {
           displacement: (data as BikeFormData).displacement ? parseInt((data as BikeFormData).displacement!) : null,
@@ -345,6 +347,31 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
                         )}
                       />
                     </div>
+
+                    <FormField
+                      control={carForm.control}
+                      name="touchPenMarks"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>タッチペン跡</FormLabel>
+                          <Select 
+                            onValueChange={(value) => field.onChange(value === "true")} 
+                            defaultValue={field.value === true ? "true" : field.value === false ? "false" : undefined}
+                          >
+                            <FormControl>
+                              <SelectTrigger className="h-12 bg-input border-border/50">
+                                <SelectValue placeholder="選択してください" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="true">ある</SelectItem>
+                              <SelectItem value="false">なし</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
                     {/* Contact Info */}
                     <div className="pt-6 border-t border-border/50">

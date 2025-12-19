@@ -64,6 +64,7 @@ export type Database = {
           notes: string | null
           phone: string | null
           status: Database["public"]["Enums"]["assessment_status"] | null
+          touch_pen_marks: boolean | null
           transmission: Database["public"]["Enums"]["transmission_type"] | null
           updated_at: string | null
           vehicle_type: Database["public"]["Enums"]["vehicle_type"]
@@ -89,6 +90,7 @@ export type Database = {
           notes?: string | null
           phone?: string | null
           status?: Database["public"]["Enums"]["assessment_status"] | null
+          touch_pen_marks?: boolean | null
           transmission?: Database["public"]["Enums"]["transmission_type"] | null
           updated_at?: string | null
           vehicle_type: Database["public"]["Enums"]["vehicle_type"]
@@ -114,6 +116,7 @@ export type Database = {
           notes?: string | null
           phone?: string | null
           status?: Database["public"]["Enums"]["assessment_status"] | null
+          touch_pen_marks?: boolean | null
           transmission?: Database["public"]["Enums"]["transmission_type"] | null
           updated_at?: string | null
           vehicle_type?: Database["public"]["Enums"]["vehicle_type"]
