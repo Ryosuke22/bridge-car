@@ -14,9 +14,10 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Inter", "sans-serif"],
+        sans: ["Noto Sans JP", "Inter", "sans-serif"],
         display: ["Shippori Antique", "sans-serif"],
         card: ["Kosugi Maru", "sans-serif"],
+        noto: ["Noto Sans JP", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
