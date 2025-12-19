@@ -15,7 +15,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="font-display text-xl mb-4 text-foreground">買取対象</h3>
+            <h3 className="font-sans text-xl font-medium mb-4 text-foreground">買取対象</h3>
             <ul className="space-y-2 text-muted-foreground">
               <li>• 初年度登録が平成12年以前のもの</li>
               <li>
@@ -27,7 +27,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="font-display text-xl mb-4 text-foreground">お問い合わせ</h3>
+            <h3 className="font-sans text-xl font-medium mb-4 text-foreground">お問い合わせ</h3>
             <ul className="space-y-3 text-muted-foreground">
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-primary" />
