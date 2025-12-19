@@ -17,7 +17,6 @@ const AddVehicleDialog = ({ maxSortOrder }: AddVehicleDialogProps) => {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
   const [category, setCategory] = useState<WantedVehicle['category']>('Car');
-  const [tag, setTag] = useState('');
   const [isHighPriority, setIsHighPriority] = useState(false);
   
   const addVehicle = useAddVehicle();
@@ -29,14 +28,13 @@ const AddVehicleDialog = ({ maxSortOrder }: AddVehicleDialogProps) => {
       await addVehicle.mutateAsync({
         name,
         category,
-        tag,
+        tag: '-',
         is_high_priority: isHighPriority,
         sort_order: maxSortOrder + 1
       });
       toast.success('車種を追加しました');
       setOpen(false);
       setName('');
-      setTag('');
       setCategory('Car');
       setIsHighPriority(false);
     } catch (error) {
@@ -79,16 +77,6 @@ const AddVehicleDialog = ({ maxSortOrder }: AddVehicleDialogProps) => {
                 <SelectItem value="Car/Bike">車/バイク</SelectItem>
               </SelectContent>
             </Select>
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="tag">タグ（買取理由）</Label>
-            <Input
-              id="tag"
-              value={tag}
-              onChange={(e) => setTag(e.target.value)}
-              placeholder="例: 海外輸出人気 / 希少車"
-              required
-            />
           </div>
           <div className="flex items-center justify-between">
             <Label htmlFor="priority">高優先度</Label>
