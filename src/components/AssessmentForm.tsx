@@ -16,7 +16,6 @@ import { useWantedVehicles, getCarModels, getBikeModels } from "@/hooks/useWante
 
 const carSchema = z.object({
   vehicleType: z.literal("car"),
-  manufacturer: z.string().min(1, "メーカーを入力してください"),
   modelName: z.string().min(1, "車種名を入力してください"),
   displacement: z.string().optional(),
   fuelType: z.enum(["gasoline", "diesel", "hybrid", "electric"]).optional(),
@@ -32,7 +31,6 @@ const carSchema = z.object({
 
 const bikeSchema = z.object({
   vehicleType: z.literal("bike"),
-  manufacturer: z.string().min(1, "メーカーを入力してください"),
   modelName: z.string().min(1, "車種名を入力してください"),
   displacement: z.string().optional(),
   hasCustom: z.boolean().default(false),
@@ -63,7 +61,6 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
     resolver: zodResolver(carSchema),
     defaultValues: {
       vehicleType: "car",
-      manufacturer: "",
       modelName: "",
       name: "",
       email: "",
@@ -76,7 +73,6 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
     resolver: zodResolver(bikeSchema),
     defaultValues: {
       vehicleType: "bike",
-      manufacturer: "",
       modelName: "",
       hasCustom: false,
       name: "",
@@ -92,7 +88,7 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
     try {
       const insertData = {
         vehicle_type: data.vehicleType as "car" | "bike",
-        manufacturer: data.manufacturer,
+        manufacturer: "-",
         model_name: data.modelName,
         name: data.name,
         email: data.email,
@@ -211,45 +207,30 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
               <TabsContent value="car">
                 <Form {...carForm}>
                   <form onSubmit={carForm.handleSubmit(onSubmit)} className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <FormField
-                        control={carForm.control}
-                        name="manufacturer"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>メーカー *</FormLabel>
+                    <FormField
+                      control={carForm.control}
+                      name="modelName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>車種を選択 *</FormLabel>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
-                              <Input placeholder="例: Toyota" {...field} className="h-12 bg-input border-border/50" />
+                              <SelectTrigger className="h-12 bg-input border-border/50">
+                                <SelectValue placeholder="車種を選択してください" />
+                              </SelectTrigger>
                             </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={carForm.control}
-                        name="modelName"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>車種を選択 *</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                              <FormControl>
-                                <SelectTrigger className="h-12 bg-input border-border/50">
-                                  <SelectValue placeholder="車種を選択してください" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {carModels.map((model) => (
-                                  <SelectItem key={model} value={model}>
-                                    {model}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
+                            <SelectContent>
+                              {carModels.map((model) => (
+                                <SelectItem key={model} value={model}>
+                                  {model}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
                     <div className="grid md:grid-cols-2 gap-4">
                       <FormField
@@ -456,45 +437,30 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
               <TabsContent value="bike">
                 <Form {...bikeForm}>
                   <form onSubmit={bikeForm.handleSubmit(onSubmit)} className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <FormField
-                        control={bikeForm.control}
-                        name="manufacturer"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>メーカー *</FormLabel>
+                    <FormField
+                      control={bikeForm.control}
+                      name="modelName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>車種を選択 *</FormLabel>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
-                              <Input placeholder="例: Honda" {...field} className="h-12 bg-input border-border/50" />
+                              <SelectTrigger className="h-12 bg-input border-border/50">
+                                <SelectValue placeholder="車種を選択してください" />
+                              </SelectTrigger>
                             </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={bikeForm.control}
-                        name="modelName"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>車種を選択 *</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                              <FormControl>
-                                <SelectTrigger className="h-12 bg-input border-border/50">
-                                  <SelectValue placeholder="車種を選択してください" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {bikeModels.map((model) => (
-                                  <SelectItem key={model} value={model}>
-                                    {model}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
+                            <SelectContent>
+                              {bikeModels.map((model) => (
+                                <SelectItem key={model} value={model}>
+                                  {model}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
                     <FormField
                       control={bikeForm.control}
