@@ -200,21 +200,42 @@ const WantedSection = () => {
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
-      const allVehicles = [...vehicles];
-      const oldIndex = allVehicles.findIndex(v => v.id === active.id);
-      const newIndex = allVehicles.findIndex(v => v.id === over.id);
+      const draggedVehicle = vehicles.find(v => v.id === active.id);
+      const targetVehicle = vehicles.find(v => v.id === over.id);
       
-      const reordered = arrayMove(allVehicles, oldIndex, newIndex);
-      const updates = reordered.map((v, index) => ({
-        id: v.id,
-        sort_order: index
-      }));
+      if (!draggedVehicle || !targetVehicle) return;
+      
+      // Check if moving between sections (different priority)
+      const movingToHighPriority = !draggedVehicle.is_high_priority && targetVehicle.is_high_priority;
+      const movingToNormalPriority = draggedVehicle.is_high_priority && !targetVehicle.is_high_priority;
       
       try {
+        // If moving between sections, update priority first
+        if (movingToHighPriority || movingToNormalPriority) {
+          await updateVehicle.mutateAsync({
+            id: draggedVehicle.id,
+            is_high_priority: targetVehicle.is_high_priority
+          });
+          toast.success(movingToHighPriority ? '「特に探しています」に移動しました' : '「その他の強化車種」に移動しました');
+        }
+        
+        // Then handle reordering
+        const allVehicles = [...vehicles];
+        const oldIndex = allVehicles.findIndex(v => v.id === active.id);
+        const newIndex = allVehicles.findIndex(v => v.id === over.id);
+        
+        const reordered = arrayMove(allVehicles, oldIndex, newIndex);
+        const updates = reordered.map((v, index) => ({
+          id: v.id,
+          sort_order: index
+        }));
+        
         await reorderVehicles.mutateAsync(updates);
-        toast.success('並び順を更新しました');
+        if (!movingToHighPriority && !movingToNormalPriority) {
+          toast.success('並び順を更新しました');
+        }
       } catch {
-        toast.error('並び順の更新に失敗しました');
+        toast.error('更新に失敗しました');
       }
     }
   };
