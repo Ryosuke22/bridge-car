@@ -193,8 +193,7 @@ const WantedSection = () => {
     })
   );
 
-  const highPriorityVehicles = vehicles.filter(v => v.is_high_priority);
-  const normalPriorityVehicles = vehicles.filter(v => !v.is_high_priority);
+  const allVehicles = vehicles;
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
@@ -285,48 +284,21 @@ const WantedSection = () => {
             collisionDetection={closestCenter}
             onDragEnd={handleDragEnd}
           >
-            {/* High Priority Section */}
-            <div className="mb-12">
+            {/* All Vehicles Section */}
+            <div>
               <div className="flex items-center gap-2 mb-6">
                 <Star className="h-6 w-6 text-accent fill-accent" />
                 <h3 className="text-xl font-bold text-foreground">特に探しています</h3>
                 <span className="text-sm text-muted-foreground">
-                  ({highPriorityVehicles.length})
+                  ({allVehicles.length})
                 </span>
               </div>
               <SortableContext
-                items={highPriorityVehicles.map(v => v.id)}
+                items={allVehicles.map(v => v.id)}
                 strategy={verticalListSortingStrategy}
               >
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pl-8">
-                  {highPriorityVehicles.map((vehicle) => (
-                    <SortableVehicleCard
-                      key={vehicle.id}
-                      vehicle={vehicle}
-                      isAdmin={isAdmin}
-                      onDelete={setDeleteId}
-                      onTogglePriority={handleTogglePriority}
-                      onEdit={setEditingVehicle}
-                    />
-                  ))}
-                </div>
-              </SortableContext>
-            </div>
-
-            {/* Normal Priority Section */}
-            <div>
-              <div className="flex items-center gap-2 mb-6">
-                <h3 className="text-xl font-bold text-foreground">その他の強化車種</h3>
-                <span className="text-sm text-muted-foreground">
-                  ({normalPriorityVehicles.length})
-                </span>
-              </div>
-              <SortableContext
-                items={normalPriorityVehicles.map(v => v.id)}
-                strategy={verticalListSortingStrategy}
-              >
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pl-8">
-                  {normalPriorityVehicles.map((vehicle) => (
+                  {allVehicles.map((vehicle) => (
                     <SortableVehicleCard
                       key={vehicle.id}
                       vehicle={vehicle}
@@ -341,52 +313,27 @@ const WantedSection = () => {
             </div>
           </DndContext>
         ) : (
-          <>
-            {/* High Priority Section */}
-            <div className="mb-12">
-              <div className="flex items-center gap-2 mb-6">
-                <Star className="h-6 w-6 text-accent fill-accent" />
-                <h3 className="text-xl font-bold text-foreground">特に探しています</h3>
-                <span className="text-sm text-muted-foreground">
-                  ({highPriorityVehicles.length})
-                </span>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {highPriorityVehicles.map((vehicle) => (
-                  <VehicleCard
-                    key={vehicle.id}
-                    vehicle={vehicle}
-                    isAdmin={false}
-                    onDelete={() => {}}
-                    onTogglePriority={() => {}}
-                    onEdit={() => {}}
-                  />
-                ))}
-              </div>
+          <div>
+            <div className="flex items-center gap-2 mb-6">
+              <Star className="h-6 w-6 text-accent fill-accent" />
+              <h3 className="text-xl font-bold text-foreground">特に探しています</h3>
+              <span className="text-sm text-muted-foreground">
+                ({allVehicles.length})
+              </span>
             </div>
-
-            {/* Normal Priority Section */}
-            <div>
-              <div className="flex items-center gap-2 mb-6">
-                <h3 className="text-xl font-bold text-foreground">その他の強化車種</h3>
-                <span className="text-sm text-muted-foreground">
-                  ({normalPriorityVehicles.length})
-                </span>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {normalPriorityVehicles.map((vehicle) => (
-                  <VehicleCard
-                    key={vehicle.id}
-                    vehicle={vehicle}
-                    isAdmin={false}
-                    onDelete={() => {}}
-                    onTogglePriority={() => {}}
-                    onEdit={() => {}}
-                  />
-                ))}
-              </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {allVehicles.map((vehicle) => (
+                <VehicleCard
+                  key={vehicle.id}
+                  vehicle={vehicle}
+                  isAdmin={false}
+                  onDelete={() => {}}
+                  onTogglePriority={() => {}}
+                  onEdit={() => {}}
+                />
+              ))}
             </div>
-          </>
+          </div>
         )}
       </div>
 
