@@ -24,6 +24,7 @@ const carSchema = z.object({
   year: z.string().optional(),
   mileage: z.string().optional(),
   touchPenMarks: z.boolean().optional(),
+  accidentHistory: z.boolean().optional(),
   name: z.string().min(1, "お名前を入力してください"),
   email: z.string().email("正しいメールアドレスを入力してください"),
   phone: z.string().optional(),
@@ -38,6 +39,7 @@ const bikeSchema = z.object({
   engineStatus: z.enum(["running", "not_running"]).optional(),
   inspectionRemaining: z.string().optional(),
   touchPenMarks: z.boolean().optional(),
+  accidentHistory: z.boolean().optional(),
   name: z.string().min(1, "お名前を入力してください"),
   email: z.string().email("正しいメールアドレスを入力してください"),
   phone: z.string().optional(),
@@ -104,6 +106,7 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
           year: (data as CarFormData).year ? parseInt((data as CarFormData).year!) : null,
           mileage: (data as CarFormData).mileage ? parseInt((data as CarFormData).mileage!) : null,
           touch_pen_marks: (data as CarFormData).touchPenMarks ?? null,
+          accident_history: (data as CarFormData).accidentHistory ?? null,
         }),
         ...(data.vehicleType === "bike" && {
           displacement: (data as BikeFormData).displacement ? parseInt((data as BikeFormData).displacement!) : null,
@@ -111,6 +114,7 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
           engine_status: (data as BikeFormData).engineStatus || null,
           inspection_remaining: (data as BikeFormData).inspectionRemaining || null,
           touch_pen_marks: (data as BikeFormData).touchPenMarks ?? null,
+          accident_history: (data as BikeFormData).accidentHistory ?? null,
         }),
       };
 
@@ -350,30 +354,56 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
                       />
                     </div>
 
-                    <FormField
-                      control={carForm.control}
-                      name="touchPenMarks"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>タッチペン跡</FormLabel>
-                          <Select 
-                            onValueChange={(value) => field.onChange(value === "true")} 
-                            defaultValue={field.value === true ? "true" : field.value === false ? "false" : undefined}
-                          >
-                            <FormControl>
-                              <SelectTrigger className="h-12 bg-input border-border/50">
-                                <SelectValue placeholder="選択してください" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectItem value="true">ある</SelectItem>
-                              <SelectItem value="false">なし</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <FormField
+                        control={carForm.control}
+                        name="touchPenMarks"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>タッチペン跡</FormLabel>
+                            <Select 
+                              onValueChange={(value) => field.onChange(value === "true")} 
+                              defaultValue={field.value === true ? "true" : field.value === false ? "false" : undefined}
+                            >
+                              <FormControl>
+                                <SelectTrigger className="h-12 bg-input border-border/50">
+                                  <SelectValue placeholder="選択してください" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectItem value="true">ある</SelectItem>
+                                <SelectItem value="false">なし</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={carForm.control}
+                        name="accidentHistory"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>事故歴</FormLabel>
+                            <Select 
+                              onValueChange={(value) => field.onChange(value === "true")} 
+                              defaultValue={field.value === true ? "true" : field.value === false ? "false" : undefined}
+                            >
+                              <FormControl>
+                                <SelectTrigger className="h-12 bg-input border-border/50">
+                                  <SelectValue placeholder="選択してください" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectItem value="true">あり</SelectItem>
+                                <SelectItem value="false">なし</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
 
                     {/* Contact Info */}
                     <div className="pt-6 border-t border-border/50">
@@ -563,30 +593,56 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
                       )}
                     />
 
-                    <FormField
-                      control={bikeForm.control}
-                      name="touchPenMarks"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>タッチペン跡</FormLabel>
-                          <Select 
-                            onValueChange={(value) => field.onChange(value === "true")} 
-                            defaultValue={field.value === true ? "true" : field.value === false ? "false" : undefined}
-                          >
-                            <FormControl>
-                              <SelectTrigger className="h-12 bg-input border-border/50">
-                                <SelectValue placeholder="選択してください" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectItem value="true">ある</SelectItem>
-                              <SelectItem value="false">なし</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <FormField
+                        control={bikeForm.control}
+                        name="touchPenMarks"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>タッチペン跡</FormLabel>
+                            <Select 
+                              onValueChange={(value) => field.onChange(value === "true")} 
+                              defaultValue={field.value === true ? "true" : field.value === false ? "false" : undefined}
+                            >
+                              <FormControl>
+                                <SelectTrigger className="h-12 bg-input border-border/50">
+                                  <SelectValue placeholder="選択してください" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectItem value="true">ある</SelectItem>
+                                <SelectItem value="false">なし</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={bikeForm.control}
+                        name="accidentHistory"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>事故歴</FormLabel>
+                            <Select 
+                              onValueChange={(value) => field.onChange(value === "true")} 
+                              defaultValue={field.value === true ? "true" : field.value === false ? "false" : undefined}
+                            >
+                              <FormControl>
+                                <SelectTrigger className="h-12 bg-input border-border/50">
+                                  <SelectValue placeholder="選択してください" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectItem value="true">あり</SelectItem>
+                                <SelectItem value="false">なし</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
 
                     {/* Contact Info */}
                     <div className="pt-6 border-t border-border/50">

@@ -45,6 +45,7 @@ export type Database = {
       }
       assessment_requests: {
         Row: {
+          accident_history: boolean | null
           admin_notes: string | null
           created_at: string | null
           displacement: number | null
@@ -71,6 +72,7 @@ export type Database = {
           year: number | null
         }
         Insert: {
+          accident_history?: boolean | null
           admin_notes?: string | null
           created_at?: string | null
           displacement?: number | null
@@ -97,6 +99,7 @@ export type Database = {
           year?: number | null
         }
         Update: {
+          accident_history?: boolean | null
           admin_notes?: string | null
           created_at?: string | null
           displacement?: number | null
