@@ -34,9 +34,6 @@ const Header = ({
             <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">
               当社の強み
             </a>
-            <a href="#simulator" className="text-muted-foreground hover:text-foreground transition-colors">
-              簡易査定
-            </a>
             <Button variant="default" size="sm" onClick={onScrollToForm}>
               無料査定を申し込む
             </Button>
@@ -67,9 +64,6 @@ const Header = ({
             <div className="flex flex-col gap-4">
               <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors" onClick={() => setIsMenuOpen(false)}>
                 当社の強み
-              </a>
-              <a href="#simulator" className="text-muted-foreground hover:text-foreground transition-colors" onClick={() => setIsMenuOpen(false)}>
-                簡易査定
               </a>
               <Button variant="default" onClick={() => {
             onScrollToForm();
