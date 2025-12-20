@@ -1,6 +1,5 @@
 import { Mail, Phone, MapPin } from "lucide-react";
 import headerLogo from "@/assets/header-logo.png";
-
 const Footer = () => {
   return <footer className="py-12 bg-background border-t border-border/50">
       <div className="container mx-auto px-4">
@@ -22,7 +21,7 @@ const Footer = () => {
             </li>
               <li>
             </li>
-              <li>•不動車可</li>
+              <li>• 不動車可</li>
             </ul>
           </div>
 
