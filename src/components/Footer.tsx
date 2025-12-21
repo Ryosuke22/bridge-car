@@ -36,8 +36,7 @@ const Footer = () => {
                 <Phone className="w-4 h-4 text-primary" />
                 ​090-1195-2836
               </li>
-              <li className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-primary" />
+              <li className="flex items-center gap-2">愛知県豊橋市雲谷町上ノ山65-461<MapPin className="w-4 h-4 text-primary" />
                 東京都港区XX-XX
               </li>
             </ul>
