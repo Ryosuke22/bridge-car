@@ -34,7 +34,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-primary" />
-                愛知県豊橋市雲谷町上ノ山65-461
+                愛知県豊橋市雲谷町
               </li>
             </ul>
           </div>
