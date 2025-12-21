@@ -28,8 +28,8 @@ const Footer = () => {
           <div>
             <h3 className="font-sans text-xl font-medium mb-4 text-foreground">お問い合わせ</h3>
             <ul className="space-y-3 text-muted-foreground">
-              <li className="flex items-center gap-2">info@bridge-car.com<Mail className="w-4 h-4 text-primary" />
-                info@exportbuyers.example.com
+              <li className="flex items-center gap-2">​<Mail className="w-4 h-4 text-primary" />
+                ​info@bridge-car.com
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-primary" />
