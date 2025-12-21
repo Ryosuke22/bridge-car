@@ -17,10 +17,6 @@ const Footer = () => {
             <h3 className="font-sans text-xl font-medium mb-4 text-foreground">買取対象</h3>
             <ul className="space-y-2 text-muted-foreground">
               <li>• 初年度登録が平成12年以前のもの</li>
-              <li>
-            </li>
-              <li>
-            </li>
               <li>• 不動車可</li>
             </ul>
           </div>
@@ -34,10 +30,11 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-primary" />
-                ​090-1195-2836
+                090-1195-2836
               </li>
-              <li className="flex items-center gap-2">愛知県豊橋市雲谷町上ノ山65-461<MapPin className="w-4 h-4 text-primary" />
-                東京都港区XX-XX
+              <li className="flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-primary" />
+                愛知県豊橋市雲谷町上ノ山65-461
               </li>
             </ul>
           </div>
