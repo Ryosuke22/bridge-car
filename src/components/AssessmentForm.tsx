@@ -370,9 +370,23 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>年式</FormLabel>
-                            <FormControl>
-                              <Input type="number" placeholder="例: 2015" {...field} className="h-12 bg-input border-border/50" />
-                            </FormControl>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger className="h-12 bg-input border-border/50">
+                                  <SelectValue placeholder="選択してください" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {Array.from({ length: new Date().getFullYear() - 1969 }, (_, i) => {
+                                  const year = new Date().getFullYear() - i;
+                                  return (
+                                    <SelectItem key={year} value={year.toString()}>
+                                      {year}年
+                                    </SelectItem>
+                                  );
+                                })}
+                              </SelectContent>
+                            </Select>
                             <FormMessage />
                           </FormItem>
                         )}
