@@ -1,1 +1,4 @@
 project_id = "jreqfidsfozpjeygddlm"
+
+[functions.send-assessment-notification]
+verify_jwt = false
