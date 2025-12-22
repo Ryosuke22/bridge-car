@@ -129,6 +129,37 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
 
       if (error) throw error;
 
+      // Send email notification
+      try {
+        const emailData = {
+          vehicleType: data.vehicleType,
+          modelName: data.modelName,
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          notes: data.notes,
+          displacement: data.vehicleType === "car" ? (data as CarFormData).displacement : (data as BikeFormData).displacement,
+          fuelType: data.vehicleType === "car" ? (data as CarFormData).fuelType : undefined,
+          transmission: data.vehicleType === "car" ? (data as CarFormData).transmission : undefined,
+          handlePosition: data.vehicleType === "car" ? (data as CarFormData).handlePosition : undefined,
+          year: data.vehicleType === "car" ? (data as CarFormData).year : undefined,
+          mileage: data.vehicleType === "car" ? (data as CarFormData).mileage : undefined,
+          touchPenMarks: data.vehicleType === "car" ? (data as CarFormData).touchPenMarks : (data as BikeFormData).touchPenMarks,
+          accidentHistory: data.vehicleType === "car" ? (data as CarFormData).accidentHistory : (data as BikeFormData).accidentHistory,
+          hasCustom: data.hasCustom,
+          customDetails: data.customDetails,
+          engineStatus: data.vehicleType === "bike" ? (data as BikeFormData).engineStatus : undefined,
+          inspectionRemaining: data.vehicleType === "bike" ? (data as BikeFormData).inspectionRemaining : undefined,
+        };
+
+        await supabase.functions.invoke("send-assessment-notification", {
+          body: emailData,
+        });
+      } catch (emailError) {
+        console.error("Email notification failed:", emailError);
+        // Don't fail the whole submission if email fails
+      }
+
       setIsSubmitted(true);
       toast.success("査定申し込みを受け付けました！", {
         description: "担当者より24時間以内にご連絡いたします。",
