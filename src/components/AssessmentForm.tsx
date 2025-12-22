@@ -37,6 +37,7 @@ const bikeSchema = z.object({
   vehicleType: z.literal("bike"),
   modelName: z.string().min(1, "車種名を入力してください"),
   displacement: z.string().optional(),
+  year: z.string().optional(),
   hasCustom: z.boolean().default(false),
   customDetails: z.string().optional(),
   engineStatus: z.enum(["running", "not_running"]).optional(),
@@ -614,19 +615,48 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
                       )}
                     />
 
-                    <FormField
-                      control={bikeForm.control}
-                      name="displacement"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>排気量 (cc)</FormLabel>
-                          <FormControl>
-                            <Input type="number" placeholder="例: 400" {...field} className="h-12 bg-input border-border/50" />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <FormField
+                        control={bikeForm.control}
+                        name="displacement"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>排気量 (cc)</FormLabel>
+                            <FormControl>
+                              <Input type="number" placeholder="例: 400" {...field} className="h-12 bg-input border-border/50" />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={bikeForm.control}
+                        name="year"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>年式</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger className="h-12 bg-input border-border/50">
+                                  <SelectValue placeholder="選択してください" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {Array.from({ length: new Date().getFullYear() - 1969 }, (_, i) => {
+                                  const year = new Date().getFullYear() - i;
+                                  return (
+                                    <SelectItem key={year} value={year.toString()}>
+                                      {year}年
+                                    </SelectItem>
+                                  );
+                                })}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
 
                     <div className="grid md:grid-cols-2 gap-4">
                       <FormField
