@@ -117,6 +117,7 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
         }),
         ...(data.vehicleType === "bike" && {
           displacement: (data as BikeFormData).displacement ? parseInt((data as BikeFormData).displacement!) : null,
+          year: (data as BikeFormData).year ? parseInt((data as BikeFormData).year!) : null,
           has_custom: (data as BikeFormData).hasCustom,
           custom_details: (data as BikeFormData).customDetails || null,
           engine_status: (data as BikeFormData).engineStatus || null,
