@@ -149,7 +149,8 @@ const handler = async (req: Request): Promise<Response> => {
       <p style="margin-top: 20px; color: #666;">このメールは Bridge Car 査定フォームから自動送信されました。</p>
     `;
 
-    const emailResponse = await fetch("https://api.resend.com/emails", {
+    // 1. 管理者への通知メール
+    const adminEmailResponse = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -163,10 +164,54 @@ const handler = async (req: Request): Promise<Response> => {
       }),
     });
 
-    const emailResult = await emailResponse.json();
-    console.log("Email sent successfully:", emailResult);
+    const adminEmailResult = await adminEmailResponse.json();
+    console.log("Admin email sent successfully:", adminEmailResult);
 
-    return new Response(JSON.stringify({ success: true, emailResult }), {
+    // 2. お客様への確認メール
+    const customerEmailHtml = `
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+        <h1 style="color: #333;">査定申込を受け付けました</h1>
+        <p>${data.name} 様</p>
+        <p>この度は Bridge Car の査定サービスをご利用いただき、誠にありがとうございます。</p>
+        <p>以下の内容で査定申込を受け付けました。</p>
+        
+        <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h3 style="margin-top: 0;">お申込み内容</h3>
+          <p><strong>車両タイプ:</strong> ${vehicleTypeLabel}</p>
+          <p><strong>モデル名:</strong> ${data.modelName}</p>
+          ${data.year ? `<p><strong>年式:</strong> ${data.year}年</p>` : ''}
+          ${data.mileage ? `<p><strong>走行距離:</strong> ${data.mileage}km</p>` : ''}
+        </div>
+        
+        <p>担当者より2営業日以内にご連絡させていただきます。</p>
+        <p>ご不明な点がございましたら、お気軽にお問い合わせください。</p>
+        
+        <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
+        <p style="color: #666; font-size: 12px;">
+          Bridge Car<br>
+          メール: info@bridge-car.com
+        </p>
+      </div>
+    `;
+
+    const customerEmailResponse = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${RESEND_API_KEY}`,
+      },
+      body: JSON.stringify({
+        from: "Bridge Car <onboarding@resend.dev>",
+        to: [data.email],
+        subject: "【Bridge Car】査定申込を受け付けました",
+        html: customerEmailHtml,
+      }),
+    });
+
+    const customerEmailResult = await customerEmailResponse.json();
+    console.log("Customer confirmation email sent successfully:", customerEmailResult);
+
+    return new Response(JSON.stringify({ success: true, adminEmailResult, customerEmailResult }), {
       status: 200,
       headers: { "Content-Type": "application/json", ...corsHeaders },
     });
