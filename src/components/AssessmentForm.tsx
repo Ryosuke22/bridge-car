@@ -25,6 +25,7 @@ const carSchema = z.object({
   mileage: z.string().optional(),
   touchPenMarks: z.boolean().optional(),
   accidentHistory: z.boolean().optional(),
+  repairDetails: z.string().optional(),
   hasCustom: z.boolean().default(false),
   customDetails: z.string().optional(),
   name: z.string().min(1, "お名前を入力してください"),
@@ -44,6 +45,7 @@ const bikeSchema = z.object({
   inspectionRemaining: z.string().optional(),
   touchPenMarks: z.boolean().optional(),
   accidentHistory: z.boolean().optional(),
+  repairDetails: z.string().optional(),
   name: z.string().min(1, "お名前を入力してください"),
   email: z.string().email("正しいメールアドレスを入力してください"),
   phone: z.string().optional(),
@@ -459,6 +461,26 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
                       />
                     </div>
 
+                    {carForm.watch("accidentHistory") && (
+                      <FormField
+                        control={carForm.control}
+                        name="repairDetails"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>修理内容</FormLabel>
+                            <FormControl>
+                              <Textarea 
+                                placeholder="修理箇所や修理内容を入力してください" 
+                                {...field} 
+                                className="min-h-[100px] bg-input border-border/50" 
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    )}
+
                     <FormField
                       control={carForm.control}
                       name="hasCustom"
@@ -787,6 +809,26 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
                         )}
                       />
                     </div>
+
+                    {bikeForm.watch("accidentHistory") && (
+                      <FormField
+                        control={bikeForm.control}
+                        name="repairDetails"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>修理内容</FormLabel>
+                            <FormControl>
+                              <Textarea 
+                                placeholder="修理箇所や修理内容を入力してください" 
+                                {...field} 
+                                className="min-h-[100px] bg-input border-border/50" 
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    )}
 
                     {/* Contact Info */}
                     <div className="pt-6 border-t border-border/50">
