@@ -21,7 +21,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div>
+          <div className="md:text-right">
             <h3 className="font-sans text-xl font-medium mb-4 text-foreground">お問い合わせ</h3>
             <p className="font-medium text-foreground mb-3">合同会社MTB</p>
             <ul className="space-y-3 text-muted-foreground">
