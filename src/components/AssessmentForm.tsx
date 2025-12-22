@@ -379,8 +379,8 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
-                                {Array.from({ length: new Date().getFullYear() - 1969 }, (_, i) => {
-                                  const year = new Date().getFullYear() - i;
+                                {Array.from({ length: 31 }, (_, i) => {
+                                  const year = 2000 - i;
                                   return (
                                     <SelectItem key={year} value={year.toString()}>
                                       {year}年
@@ -643,8 +643,8 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
-                                {Array.from({ length: new Date().getFullYear() - 1969 }, (_, i) => {
-                                  const year = new Date().getFullYear() - i;
+                                {Array.from({ length: 31 }, (_, i) => {
+                                  const year = 2000 - i;
                                   return (
                                     <SelectItem key={year} value={year.toString()}>
                                       {year}年
