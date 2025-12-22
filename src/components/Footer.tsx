@@ -19,17 +19,17 @@ const Footer = () => {
             <h3 className="font-sans text-xl font-medium mb-4 text-foreground">お問い合わせ</h3>
             <p className="font-medium text-foreground mb-3">合同会社MTB</p>
             <ul className="space-y-3 text-muted-foreground">
-              <li className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-primary" />
-                info@bridge-car.com
+              <li className="flex items-center gap-2 md:justify-end">
+                <Mail className="w-4 h-4 text-primary flex-shrink-0" />
+                <span>info@bridge-car.com</span>
               </li>
-              <li className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-primary" />
-                090-1195-2836
+              <li className="flex items-center gap-2 md:justify-end">
+                <Phone className="w-4 h-4 text-primary flex-shrink-0" />
+                <span>090-1195-2836</span>
               </li>
-              <li className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-primary" />
-                愛知県豊橋市雲谷町
+              <li className="flex items-center gap-2 md:justify-end">
+                <MapPin className="w-4 h-4 text-primary flex-shrink-0" />
+                <span>愛知県豊橋市雲谷町</span>
               </li>
             </ul>
           </div>
