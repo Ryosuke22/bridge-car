@@ -24,6 +24,7 @@ const carSchema = z.object({
   year: z.string().optional(),
   mileage: z.string().optional(),
   touchPenMarks: z.boolean().optional(),
+  touchPenMarksCount: z.string().optional(),
   accidentHistory: z.boolean().optional(),
   repairDetails: z.string().optional(),
   hasCustom: z.boolean().default(false),
@@ -44,6 +45,7 @@ const bikeSchema = z.object({
   engineStatus: z.enum(["running", "not_running"]).optional(),
   inspectionRemaining: z.string().optional(),
   touchPenMarks: z.boolean().optional(),
+  touchPenMarksCount: z.string().optional(),
   accidentHistory: z.boolean().optional(),
   repairDetails: z.string().optional(),
   name: z.string().min(1, "お名前を入力してください"),
@@ -461,6 +463,27 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
                       />
                     </div>
 
+                    {carForm.watch("touchPenMarks") && (
+                      <FormField
+                        control={carForm.control}
+                        name="touchPenMarksCount"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>タッチペン跡の箇所数</FormLabel>
+                            <FormControl>
+                              <Input 
+                                type="text"
+                                placeholder="例: 3箇所" 
+                                {...field} 
+                                className="h-12 bg-input border-border/50" 
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    )}
+
                     {carForm.watch("accidentHistory") && (
                       <FormField
                         control={carForm.control}
@@ -809,6 +832,27 @@ const AssessmentForm = ({ formRef }: AssessmentFormProps) => {
                         )}
                       />
                     </div>
+
+                    {bikeForm.watch("touchPenMarks") && (
+                      <FormField
+                        control={bikeForm.control}
+                        name="touchPenMarksCount"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>タッチペン跡の箇所数</FormLabel>
+                            <FormControl>
+                              <Input 
+                                type="text"
+                                placeholder="例: 3箇所" 
+                                {...field} 
+                                className="h-12 bg-input border-border/50" 
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    )}
 
                     {bikeForm.watch("accidentHistory") && (
                       <FormField
