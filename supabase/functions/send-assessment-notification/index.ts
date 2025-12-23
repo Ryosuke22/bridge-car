@@ -8,6 +8,17 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
+// HTML escape function to prevent XSS attacks
+function escapeHtml(unsafe: string | undefined | null): string {
+  if (!unsafe) return '';
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 interface AssessmentRequest {
   vehicleType: string;
   modelName: string;
@@ -38,9 +49,25 @@ const handler = async (req: Request): Promise<Response> => {
 
   try {
     const data: AssessmentRequest = await req.json();
-    console.log("Received assessment data:", data);
+    console.log("Received assessment data for model:", escapeHtml(data.modelName));
 
     const vehicleTypeLabel = data.vehicleType === "car" ? "車" : "バイク";
+
+    // Escape all user-provided data before inserting into HTML
+    const safeName = escapeHtml(data.name);
+    const safeEmail = escapeHtml(data.email);
+    const safePhone = escapeHtml(data.phone);
+    const safeNotes = escapeHtml(data.notes);
+    const safeModelName = escapeHtml(data.modelName);
+    const safeDisplacement = escapeHtml(data.displacement);
+    const safeFuelType = escapeHtml(data.fuelType);
+    const safeTransmission = escapeHtml(data.transmission);
+    const safeHandlePosition = escapeHtml(data.handlePosition);
+    const safeYear = escapeHtml(data.year);
+    const safeMileage = escapeHtml(data.mileage);
+    const safeEngineStatus = escapeHtml(data.engineStatus);
+    const safeInspectionRemaining = escapeHtml(data.inspectionRemaining);
+    const safeCustomDetails = escapeHtml(data.customDetails);
 
     const emailHtml = `
       <h1>新しい査定申込がありました</h1>
@@ -52,54 +79,54 @@ const handler = async (req: Request): Promise<Response> => {
         </tr>
         <tr>
           <td style="padding: 8px; border: 1px solid #ddd; background: #f5f5f5;"><strong>モデル名</strong></td>
-          <td style="padding: 8px; border: 1px solid #ddd;">${data.modelName}</td>
+          <td style="padding: 8px; border: 1px solid #ddd;">${safeModelName}</td>
         </tr>
-        ${data.displacement ? `
+        ${safeDisplacement ? `
         <tr>
           <td style="padding: 8px; border: 1px solid #ddd; background: #f5f5f5;"><strong>排気量</strong></td>
-          <td style="padding: 8px; border: 1px solid #ddd;">${data.displacement}cc</td>
+          <td style="padding: 8px; border: 1px solid #ddd;">${safeDisplacement}cc</td>
         </tr>
         ` : ''}
-        ${data.fuelType ? `
+        ${safeFuelType ? `
         <tr>
           <td style="padding: 8px; border: 1px solid #ddd; background: #f5f5f5;"><strong>燃料タイプ</strong></td>
-          <td style="padding: 8px; border: 1px solid #ddd;">${data.fuelType}</td>
+          <td style="padding: 8px; border: 1px solid #ddd;">${safeFuelType}</td>
         </tr>
         ` : ''}
-        ${data.transmission ? `
+        ${safeTransmission ? `
         <tr>
           <td style="padding: 8px; border: 1px solid #ddd; background: #f5f5f5;"><strong>トランスミッション</strong></td>
-          <td style="padding: 8px; border: 1px solid #ddd;">${data.transmission}</td>
+          <td style="padding: 8px; border: 1px solid #ddd;">${safeTransmission}</td>
         </tr>
         ` : ''}
-        ${data.handlePosition ? `
+        ${safeHandlePosition ? `
         <tr>
           <td style="padding: 8px; border: 1px solid #ddd; background: #f5f5f5;"><strong>ハンドル位置</strong></td>
-          <td style="padding: 8px; border: 1px solid #ddd;">${data.handlePosition}</td>
+          <td style="padding: 8px; border: 1px solid #ddd;">${safeHandlePosition}</td>
         </tr>
         ` : ''}
-        ${data.year ? `
+        ${safeYear ? `
         <tr>
           <td style="padding: 8px; border: 1px solid #ddd; background: #f5f5f5;"><strong>年式</strong></td>
-          <td style="padding: 8px; border: 1px solid #ddd;">${data.year}年</td>
+          <td style="padding: 8px; border: 1px solid #ddd;">${safeYear}年</td>
         </tr>
         ` : ''}
-        ${data.mileage ? `
+        ${safeMileage ? `
         <tr>
           <td style="padding: 8px; border: 1px solid #ddd; background: #f5f5f5;"><strong>走行距離</strong></td>
-          <td style="padding: 8px; border: 1px solid #ddd;">${data.mileage}km</td>
+          <td style="padding: 8px; border: 1px solid #ddd;">${safeMileage}km</td>
         </tr>
         ` : ''}
-        ${data.engineStatus ? `
+        ${safeEngineStatus ? `
         <tr>
           <td style="padding: 8px; border: 1px solid #ddd; background: #f5f5f5;"><strong>エンジン状態</strong></td>
-          <td style="padding: 8px; border: 1px solid #ddd;">${data.engineStatus}</td>
+          <td style="padding: 8px; border: 1px solid #ddd;">${safeEngineStatus}</td>
         </tr>
         ` : ''}
-        ${data.inspectionRemaining ? `
+        ${safeInspectionRemaining ? `
         <tr>
           <td style="padding: 8px; border: 1px solid #ddd; background: #f5f5f5;"><strong>車検残り</strong></td>
-          <td style="padding: 8px; border: 1px solid #ddd;">${data.inspectionRemaining}</td>
+          <td style="padding: 8px; border: 1px solid #ddd;">${safeInspectionRemaining}</td>
         </tr>
         ` : ''}
         <tr>
@@ -114,10 +141,10 @@ const handler = async (req: Request): Promise<Response> => {
           <td style="padding: 8px; border: 1px solid #ddd; background: #f5f5f5;"><strong>カスタム</strong></td>
           <td style="padding: 8px; border: 1px solid #ddd;">${data.hasCustom ? 'あり' : 'なし'}</td>
         </tr>
-        ${data.customDetails ? `
+        ${safeCustomDetails ? `
         <tr>
           <td style="padding: 8px; border: 1px solid #ddd; background: #f5f5f5;"><strong>カスタム詳細</strong></td>
-          <td style="padding: 8px; border: 1px solid #ddd;">${data.customDetails}</td>
+          <td style="padding: 8px; border: 1px solid #ddd;">${safeCustomDetails}</td>
         </tr>
         ` : ''}
       </table>
@@ -126,22 +153,22 @@ const handler = async (req: Request): Promise<Response> => {
       <table style="border-collapse: collapse; width: 100%;">
         <tr>
           <td style="padding: 8px; border: 1px solid #ddd; background: #f5f5f5;"><strong>お名前</strong></td>
-          <td style="padding: 8px; border: 1px solid #ddd;">${data.name}</td>
+          <td style="padding: 8px; border: 1px solid #ddd;">${safeName}</td>
         </tr>
         <tr>
           <td style="padding: 8px; border: 1px solid #ddd; background: #f5f5f5;"><strong>メールアドレス</strong></td>
-          <td style="padding: 8px; border: 1px solid #ddd;">${data.email}</td>
+          <td style="padding: 8px; border: 1px solid #ddd;">${safeEmail}</td>
         </tr>
-        ${data.phone ? `
+        ${safePhone ? `
         <tr>
           <td style="padding: 8px; border: 1px solid #ddd; background: #f5f5f5;"><strong>電話番号</strong></td>
-          <td style="padding: 8px; border: 1px solid #ddd;">${data.phone}</td>
+          <td style="padding: 8px; border: 1px solid #ddd;">${safePhone}</td>
         </tr>
         ` : ''}
-        ${data.notes ? `
+        ${safeNotes ? `
         <tr>
           <td style="padding: 8px; border: 1px solid #ddd; background: #f5f5f5;"><strong>備考</strong></td>
-          <td style="padding: 8px; border: 1px solid #ddd;">${data.notes}</td>
+          <td style="padding: 8px; border: 1px solid #ddd;">${safeNotes}</td>
         </tr>
         ` : ''}
       </table>
@@ -159,7 +186,7 @@ const handler = async (req: Request): Promise<Response> => {
       body: JSON.stringify({
         from: "Bridge Car <onboarding@resend.dev>",
         to: ["info@bridge-car.com"],
-        subject: `【新規査定申込】${data.modelName} - ${data.name}様`,
+        subject: `【新規査定申込】${safeModelName} - ${safeName}様`,
         html: emailHtml,
       }),
     });
@@ -171,16 +198,16 @@ const handler = async (req: Request): Promise<Response> => {
     const customerEmailHtml = `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
         <h1 style="color: #333;">査定申込を受け付けました</h1>
-        <p>${data.name} 様</p>
+        <p>${safeName} 様</p>
         <p>この度は Bridge Car の査定サービスをご利用いただき、誠にありがとうございます。</p>
         <p>以下の内容で査定申込を受け付けました。</p>
         
         <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
           <h3 style="margin-top: 0;">お申込み内容</h3>
           <p><strong>車両タイプ:</strong> ${vehicleTypeLabel}</p>
-          <p><strong>モデル名:</strong> ${data.modelName}</p>
-          ${data.year ? `<p><strong>年式:</strong> ${data.year}年</p>` : ''}
-          ${data.mileage ? `<p><strong>走行距離:</strong> ${data.mileage}km</p>` : ''}
+          <p><strong>モデル名:</strong> ${safeModelName}</p>
+          ${safeYear ? `<p><strong>年式:</strong> ${safeYear}年</p>` : ''}
+          ${safeMileage ? `<p><strong>走行距離:</strong> ${safeMileage}km</p>` : ''}
         </div>
         
         <p>担当者より2営業日以内にご連絡させていただきます。</p>
