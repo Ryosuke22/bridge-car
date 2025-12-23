@@ -17,7 +17,8 @@ const Footer = () => {
             <h3 className="font-sans text-xl font-medium mb-4 text-foreground">買取対象</h3>
             <ul className="space-y-2 text-muted-foreground">
               <li>• 初年度登録が平成12年以前のもの</li>
-              <li>• 不動車可</li>
+              <li>
+            </li>
             </ul>
           </div>
 
