@@ -1,6 +1,6 @@
 import { Mail, Phone, MapPin } from "lucide-react";
 import headerLogo from "@/assets/header-logo.png";
-import mtbLogo from "@/assets/mtb-logo-transparent.png";
+import mtbLogo from "@/assets/mtb-logo-new.png";
 const Footer = () => {
   return <footer className="py-12 bg-background border-t border-border/50">
       <div className="container mx-auto px-4">
