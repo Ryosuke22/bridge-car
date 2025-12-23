@@ -18,7 +18,7 @@ const features = [{
 }, {
   icon: MapPin,
   title: "全国対応",
-  description: "北海道から沖縄まで全国どこでも対応。離島も含め、日本全国から買取のご依頼を承ります。"
+  description: "北海道から沖縄まで全国どこでも対応。離島以外、日本全国から買取のご依頼を承ります。"
 }, {
   icon: Clock,
   title: "最短即日査定",
