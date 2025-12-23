@@ -1,5 +1,6 @@
 import { Mail, Phone, MapPin } from "lucide-react";
 import headerLogo from "@/assets/header-logo.png";
+import mtbLogo from "@/assets/mtb-logo.png";
 const Footer = () => {
   return <footer className="py-12 bg-background border-t border-border/50">
       <div className="container mx-auto px-4">
@@ -25,7 +26,7 @@ const Footer = () => {
           <div className="md:flex md:flex-col md:items-end">
             <div>
               <h3 className="font-sans text-xl font-medium mb-4 text-foreground">お問い合わせ</h3>
-              <p className="font-medium text-foreground mb-3">合同会社MTB</p>
+              <img src={mtbLogo} alt="合同会社MTB" className="h-8 w-auto object-contain mb-3" />
               <ul className="space-y-3 text-muted-foreground">
                 <li className="flex items-center gap-2">
                   <Mail className="w-4 h-4 text-primary flex-shrink-0" />
