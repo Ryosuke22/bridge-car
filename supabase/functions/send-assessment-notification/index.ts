@@ -8,6 +8,28 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
+// Simple in-memory rate limiting
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT_MAX = 5; // Maximum 5 requests
+const RATE_LIMIT_WINDOW = 60000; // Per 1 minute (60000ms)
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const record = rateLimitMap.get(ip);
+  
+  if (!record || now > record.resetTime) {
+    rateLimitMap.set(ip, { count: 1, resetTime: now + RATE_LIMIT_WINDOW });
+    return false;
+  }
+  
+  if (record.count >= RATE_LIMIT_MAX) {
+    return true;
+  }
+  
+  record.count++;
+  return false;
+}
+
 // HTML escape function to prevent XSS attacks
 function escapeHtml(unsafe: string | undefined | null): string {
   if (!unsafe) return '';
@@ -45,6 +67,19 @@ const handler = async (req: Request): Promise<Response> => {
 
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
+  }
+
+  // Rate limiting check
+  const clientIP = req.headers.get("x-forwarded-for") || req.headers.get("cf-connecting-ip") || "unknown";
+  if (isRateLimited(clientIP)) {
+    console.warn(`Rate limit exceeded for IP: ${clientIP}`);
+    return new Response(
+      JSON.stringify({ error: "Too many requests. Please try again later." }),
+      {
+        status: 429,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      }
+    );
   }
 
   try {
