@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 import headerLogo from "@/assets/header-logo.png";
 import mtbLogo from "@/assets/mtb-logo-new.png";
 const Footer = () => {
@@ -39,6 +39,10 @@ const Footer = () => {
                 <li className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-primary flex-shrink-0" />
                   <span>愛知県豊橋市雲谷町</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <MessageCircle className="w-4 h-4 text-primary flex-shrink-0" />
+                  <span>LINE: @146bczqd</span>
                 </li>
               </ul>
             </div>
