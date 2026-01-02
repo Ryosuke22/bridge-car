@@ -22,9 +22,8 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div className="md:flex md:flex-col md:items-end">
-            <div>
-              <h3 className="font-sans text-xl font-medium mb-4 text-foreground">お問い合わせ</h3>
+          <div>
+            <h3 className="font-sans text-xl font-medium mb-4 text-foreground">お問い合わせ</h3>
               <img src={mtbLogo} alt="合同会社MTB" className="h-[21px] w-auto object-contain mb-3" />
               <ul className="space-y-3 text-muted-foreground">
                 <li className="flex items-center gap-2">
@@ -44,7 +43,6 @@ const Footer = () => {
                   <span>LINE: @146bczqd</span>
                 </li>
               </ul>
-            </div>
           </div>
         </div>
 
