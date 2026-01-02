@@ -3,7 +3,7 @@ import headerLogo from "@/assets/header-logo.png";
 import mtbLogo from "@/assets/mtb-logo-new.png";
 const Footer = () => {
   return <footer className="py-12 bg-background border-t border-border/50">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 max-w-5xl">
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           <div>
             <div className="flex items-center mb-4">
